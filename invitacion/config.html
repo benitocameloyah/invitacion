@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Config — Doomsday</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Russo+One&family=Barlow:wght@400;500&family=Barlow+Condensed:wght@600;700&display=swap">
+  <style>
+    :root {
+      --void:        #040706;
+      --stone:       #0d130c;
+      --plate:       #141c12;
+      --edge:        #1c2818;
+      --doom:        #1d5a2c;
+      --doom-mid:    #2a7a3e;
+      --doom-bright: #4cc862;
+      --doom-glow:   rgba(76,200,98,.3);
+      --amber:       #c87808;
+      --mist:        #2a3c2c;
+      --fog:         #587860;
+      --bone:        #bccebe;
+      --white:       #dceeda;
+      --f-display: 'Russo One', 'Arial Black', sans-serif;
+      --f-label:   'Barlow Condensed', 'Helvetica Neue', sans-serif;
+      --f-body:    'Barlow', 'Helvetica Neue', sans-serif;
+      color-scheme: dark;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--void); color: var(--bone);
+      font-family: var(--f-body); padding-inline: 16px;
+      min-height: 100vh;
+    }
+
+    #doom-frame {
+      position: fixed; inset: 0; z-index: 10; pointer-events: none;
+      animation: fp 5s ease-in-out infinite;
+    }
+    @keyframes fp {
+      0%,100% { box-shadow: inset 0 0  80px rgba(13,90,44,.18), inset 0 0 3px rgba(76,200,98,.4); }
+      50%     { box-shadow: inset 0 0 150px rgba(13,90,44,.35), inset 0 0 5px rgba(76,200,98,.75); }
+    }
+
+    main {
+      position: relative; z-index: 1;
+      max-width: 480px; margin-inline: auto;
+      padding-block: 48px 80px;
+    }
+
+    .back {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--f-label); font-size: 11px; font-weight: 600;
+      letter-spacing: .2em; color: var(--mist); text-transform: uppercase;
+      text-decoration: none; margin-bottom: 32px; transition: color .15s;
+    }
+    .back:hover { color: var(--doom-bright); }
+    .back::before { content: '←'; font-size: 14px; }
+
+    .page-eyebrow {
+      font-family: var(--f-label); font-size: 10px; font-weight: 600;
+      letter-spacing: .3em; color: var(--doom-bright); text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-family: var(--f-display); font-size: clamp(28px,7vw,42px);
+      letter-spacing: .05em; color: var(--white); margin: 0 0 32px;
+      text-shadow: 0 0 40px var(--doom-glow);
+    }
+
+    .card {
+      background: var(--stone); border: 1px solid var(--doom); padding: 24px;
+    }
+
+    .card-label {
+      font-family: var(--f-label); font-size: 10px; font-weight: 600;
+      letter-spacing: .28em; color: var(--doom-bright); text-transform: uppercase;
+      margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--edge);
+    }
+
+    .field { margin-bottom: 20px; }
+    .field:last-of-type { margin-bottom: 0; }
+
+    .field-label {
+      display: block; font-family: var(--f-label); font-size: 10px; font-weight: 600;
+      letter-spacing: .22em; color: var(--amber); text-transform: uppercase; margin-bottom: 5px;
+    }
+    .field-hint {
+      display: block; font-size: 12px; color: var(--mist); margin-bottom: 7px; line-height: 1.4;
+    }
+
+    .field input, .field textarea {
+      width: 100%; background: var(--plate); border: 1px solid var(--edge);
+      color: var(--bone); font-family: var(--f-body); font-size: 15px;
+      padding: 11px 13px; outline: none; transition: border-color .2s; resize: vertical;
+    }
+    .field input:focus, .field textarea:focus { border-color: var(--doom); }
+    .field input::placeholder, .field textarea::placeholder { color: var(--mist); }
+    .field textarea { min-height: 80px; }
+
+    .btn-save {
+      margin-top: 24px; width: 100%; background: var(--doom); color: var(--white);
+      border: none; font-family: var(--f-label); font-weight: 700; font-size: 14px;
+      letter-spacing: .18em; text-transform: uppercase; padding: 15px; cursor: pointer;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      transition: background .15s;
+    }
+    .btn-save:hover { background: var(--doom-mid); }
+    .btn-save:focus-visible { outline: 2px solid var(--doom-bright); outline-offset: 3px; }
+
+    .save-msg {
+      font-family: var(--f-label); font-size: 11px; letter-spacing: .15em;
+      text-transform: uppercase; text-align: center; margin-top: 12px; min-height: 1.4em;
+    }
+    .save-msg.ok  { color: var(--doom-bright); }
+    .save-msg.err { color: #c84040; }
+
+    .divider { height: 1px; background: var(--edge); margin-block: 20px; }
+
+    .preview-link {
+      display: block; text-align: center; margin-top: 20px;
+      font-family: var(--f-label); font-size: 11px; font-weight: 600;
+      letter-spacing: .18em; color: var(--mist); text-transform: uppercase;
+      text-decoration: none; transition: color .15s;
+    }
+    .preview-link:hover { color: var(--doom-bright); }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="doom-frame" aria-hidden="true"></div>
+
+<main>
+  <a class="back" href="index.html">Volver a la invitación</a>
+
+  <p class="page-eyebrow">Panel de administrador</p>
+  <h1>CONFIGURACIÓN</h1>
+
+  <div class="card">
+    <div class="card-label">Contenido de la invitación</div>
+
+    <div class="field">
+      <label class="field-label" for="cfg-nombre">Nombre de la invitada</label>
+      <span class="field-hint">Aparece en la página como "Para [nombre]" en dorado.</span>
+      <input id="cfg-nombre" type="text" placeholder="Ej: Sofía">
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label class="field-label" for="cfg-t1">Texto — primera línea</label>
+      <span class="field-hint">Primera oración del párrafo de invitación.</span>
+      <input id="cfg-t1" type="text" placeholder="Avengers: Doomsday se estrena.">
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="cfg-t2">Texto — segunda línea</label>
+      <span class="field-hint">Segunda oración del párrafo de invitación.</span>
+      <textarea id="cfg-t2" placeholder="Pensé que podría estar cool verla juntos."></textarea>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label class="field-label" for="cfg-tc">Términos y condiciones</label>
+      <span class="field-hint">Si lo llenas, la invitada deberá aceptarlos antes de responder. Déjalo vacío para omitirlos.</span>
+      <textarea id="cfg-tc" placeholder="Ej: Esta invitación es personal e intransferible..."></textarea>
+    </div>
+
+    <button class="btn-save" id="btn-save">GUARDAR</button>
+    <div class="save-msg" id="save-msg"></div>
+  </div>
+
+  <a class="preview-link" href="index.html" target="_blank">Ver invitación →</a>
+</main>
+
+<script>
+(function(){
+
+  /* Cargar valores actuales */
+  fetch('api.php?config')
+    .then(function(r){ return r.json(); })
+    .then(function(cfg){
+      if (cfg.nombre) document.getElementById('cfg-nombre').value = cfg.nombre;
+      if (cfg.texto1) document.getElementById('cfg-t1').value     = cfg.texto1;
+      if (cfg.texto2)    document.getElementById('cfg-t2').value = cfg.texto2;
+      if (cfg.terminos)  document.getElementById('cfg-tc').value = cfg.terminos;
+    })
+    .catch(function(){});
+
+  /* Guardar */
+  document.getElementById('btn-save').addEventListener('click', function(){
+    var cfg = {
+      nombre: document.getElementById('cfg-nombre').value.trim(),
+      texto1:    document.getElementById('cfg-t1').value.trim(),
+      texto2:    document.getElementById('cfg-t2').value.trim(),
+      terminos:  document.getElementById('cfg-tc').value.trim()
+    };
+    var msg = document.getElementById('save-msg');
+
+    fetch('api.php?config', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(cfg)
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(res){
+      msg.className = 'save-msg ' + (res.ok ? 'ok' : 'err');
+      msg.textContent = res.ok ? '✓ GUARDADO CORRECTAMENTE' : 'ERROR AL GUARDAR';
+      setTimeout(function(){ msg.textContent = ''; }, 3000);
+    })
+    .catch(function(){
+      msg.className = 'save-msg err';
+      msg.textContent = 'Error — revisa que api.php esté activo en el servidor';
+      setTimeout(function(){ msg.textContent = ''; }, 4000);
+    });
+  });
+
+})();
+</script>
+
+</body>
+</html>

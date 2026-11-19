@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Respuesta — Doomsday</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Russo+One&family=Barlow:wght@400;500&family=Barlow+Condensed:wght@600;700&display=swap">
+  <style>
+    :root {
+      --void:        #040706;
+      --stone:       #0d130c;
+      --plate:       #141c12;
+      --edge:        #1c2818;
+      --doom:        #1d5a2c;
+      --doom-mid:    #2a7a3e;
+      --doom-bright: #4cc862;
+      --doom-glow:   rgba(76,200,98,.3);
+      --amber:       #c87808;
+      --mist:        #2a3c2c;
+      --fog:         #587860;
+      --bone:        #bccebe;
+      --white:       #dceeda;
+      --f-display: 'Russo One', 'Arial Black', sans-serif;
+      --f-label:   'Barlow Condensed', 'Helvetica Neue', sans-serif;
+      --f-body:    'Barlow', 'Helvetica Neue', sans-serif;
+      color-scheme: dark;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--void); color: var(--bone);
+      font-family: var(--f-body); padding-inline: 16px;
+      min-height: 100vh;
+    }
+
+    #doom-frame {
+      position: fixed; inset: 0; z-index: 10; pointer-events: none;
+      animation: fp 5s ease-in-out infinite;
+    }
+    @keyframes fp {
+      0%,100% { box-shadow: inset 0 0  80px rgba(13,90,44,.18), inset 0 0 3px rgba(76,200,98,.4); }
+      50%     { box-shadow: inset 0 0 150px rgba(13,90,44,.35), inset 0 0 5px rgba(76,200,98,.75); }
+    }
+
+    main {
+      position: relative; z-index: 1;
+      max-width: 480px; margin-inline: auto;
+      padding-block: 48px 80px;
+    }
+
+    .back {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--f-label); font-size: 11px; font-weight: 600;
+      letter-spacing: .2em; color: var(--mist); text-transform: uppercase;
+      text-decoration: none; margin-bottom: 32px;
+      transition: color .15s;
+    }
+    .back:hover { color: var(--doom-bright); }
+    .back::before { content: '←'; font-size: 14px; }
+
+    .page-eyebrow {
+      font-family: var(--f-label); font-size: 10px; font-weight: 600;
+      letter-spacing: .3em; color: var(--doom-bright); text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-family: var(--f-display); font-size: clamp(28px,7vw,42px);
+      letter-spacing: .05em; color: var(--white); margin: 0 0 32px;
+      text-shadow: 0 0 40px var(--doom-glow);
+    }
+
+    .card {
+      background: var(--stone); border: 1px solid var(--doom);
+      padding: 24px; margin-bottom: 16px;
+    }
+
+    .card-label {
+      font-family: var(--f-label); font-size: 10px; font-weight: 600;
+      letter-spacing: .28em; color: var(--doom-bright); text-transform: uppercase;
+      margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--edge);
+    }
+
+    .resp-decision {
+      font-family: var(--f-label); font-size: 15px; letter-spacing: .08em;
+      color: var(--bone); margin-bottom: 8px;
+    }
+    .resp-fecha {
+      font-family: var(--f-label); font-size: 11px; letter-spacing: .1em;
+      color: var(--mist); margin-bottom: 14px; font-variant-numeric: tabular-nums;
+    }
+    .resp-comment {
+      font-size: 15px; color: var(--fog); line-height: 1.65;
+      border-left: 2px solid var(--doom); padding-left: 14px; font-style: italic;
+    }
+    .resp-empty {
+      font-family: var(--f-label); font-size: 13px; letter-spacing: .06em; color: var(--mist);
+    }
+
+    .yes-badge { color: #4cc862; }
+    .no-badge  { color: #587860; }
+
+    .btn-reset {
+      margin-top: 20px; width: 100%; background: transparent;
+      color: var(--fog); border: 1px solid var(--edge);
+      font-family: var(--f-label); font-weight: 600; font-size: 12px;
+      letter-spacing: .15em; text-transform: uppercase;
+      padding: 11px; cursor: pointer; transition: border-color .15s, color .15s;
+    }
+    .btn-reset:hover { border-color: var(--mist); color: var(--bone); }
+
+    .btn-refresh {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--f-label); font-size: 11px; font-weight: 600;
+      letter-spacing: .18em; color: var(--mist); text-transform: uppercase;
+      background: none; border: none; cursor: pointer; padding: 0;
+      margin-top: 20px; transition: color .15s;
+    }
+    .btn-refresh:hover { color: var(--doom-bright); }
+    .btn-refresh::before { content: '↻'; font-size: 16px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="doom-frame" aria-hidden="true"></div>
+
+<main>
+  <a class="back" href="index.html">Volver a la invitación</a>
+
+  <p class="page-eyebrow">Panel de administrador</p>
+  <h1>RESPUESTA</h1>
+
+  <div class="card" id="resp-card">
+    <div class="card-label">Respuesta de la invitada</div>
+    <div class="resp-empty">Cargando…</div>
+  </div>
+
+  <button class="btn-refresh" id="btn-refresh">Actualizar</button>
+</main>
+
+<script>
+(function(){
+  function load() {
+    var card = document.getElementById('resp-card');
+
+    fetch('api.php')
+      .then(function(r){ return r.json(); })
+      .then(function(d){ render(card, d); })
+      .catch(function(){
+        var d = null;
+        try { d = JSON.parse(localStorage.getItem('avengers-rsvp')); } catch(e){}
+        render(card, d);
+      });
+  }
+
+  function render(card, d) {
+    if (d && d.choice) {
+      var decLabel = d.choice === 'yes'
+        ? '<span class="yes-badge">SÍ VA</span>'
+        : '<span class="no-badge">NO VA</span>';
+      var fecha  = d.fecha ? '<div class="resp-fecha">' + d.fecha + '</div>' : '';
+      var cmt    = d.comment
+        ? '<div class="resp-comment">"' + d.comment + '"</div>'
+        : '<div class="resp-empty" style="font-size:12px;margin-top:12px">Sin comentario.</div>';
+
+      card.innerHTML =
+        '<div class="card-label">Respuesta de la invitada</div>' +
+        '<div class="resp-decision">Decisión: ' + decLabel + '</div>' +
+        fecha + cmt +
+        '<button class="btn-reset" id="btn-reset">BORRAR RESPUESTA — DEJARLA RESPONDER DE NUEVO</button>';
+
+      document.getElementById('btn-reset').addEventListener('click', function(){
+        if (!confirm('¿Borrar la respuesta? Ella podrá responder de nuevo.')) return;
+        fetch('api.php?reset').catch(function(){});
+        try { localStorage.removeItem('avengers-rsvp'); } catch(e){}
+        render(card, null);
+      });
+
+    } else {
+      card.innerHTML =
+        '<div class="card-label">Respuesta de la invitada</div>' +
+        '<div class="resp-empty">Todavía no ha respondido.</div>';
+    }
+  }
+
+  document.getElementById('btn-refresh').addEventListener('click', load);
+
+  load();
+})();
+</script>
+
+</body>
+</html>
