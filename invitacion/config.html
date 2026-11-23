@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Config — Doomsday</title>
+  <title>Configuración</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Russo+One&family=Barlow:wght@400;500&family=Barlow+Condensed:wght@600;700&display=swap">
   <style>
@@ -35,25 +35,38 @@
       min-height: 100vh;
     }
 
-    #doom-frame {
-      position: fixed; inset: 0; z-index: 10; pointer-events: none;
-      animation: fp 5s ease-in-out infinite;
-    }
-    @keyframes fp {
-      0%,100% { box-shadow: inset 0 0  80px rgba(13,90,44,.18), inset 0 0 3px rgba(76,200,98,.4); }
-      50%     { box-shadow: inset 0 0 150px rgba(13,90,44,.35), inset 0 0 5px rgba(76,200,98,.75); }
-    }
-
     main {
       position: relative; z-index: 1;
-      max-width: 480px; margin-inline: auto;
-      padding-block: 48px 80px;
+      max-width: 560px; margin-inline: auto;
+      padding-block: 40px 120px;
     }
+
+    /* ── Barra de administrador (igual en res.html) ── */
+    .admin-bar {
+      position: sticky; top: 0; z-index: 60; margin-inline: -16px;
+      display: flex; align-items: center; gap: 4px; padding: 0 16px; height: 52px;
+      background: color-mix(in srgb, var(--void) 90%, transparent);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--doom);
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .admin-brand {
+      font-family: var(--f-display); font-size: 14px; letter-spacing: .08em; color: var(--white);
+      margin-right: 16px; white-space: nowrap;
+    }
+    .admin-bar a {
+      font-family: var(--f-label); font-size: 12px; font-weight: 600; letter-spacing: .16em;
+      text-transform: uppercase; color: var(--fog); text-decoration: none; white-space: nowrap;
+      padding: 16px 12px; border-bottom: 2px solid transparent; transition: color .15s, border-color .15s;
+    }
+    .admin-bar a:hover, .admin-bar a:focus-visible { color: var(--white); }
+    .admin-bar a[aria-current="page"] { color: var(--doom-bright); border-bottom-color: var(--doom-bright); }
+    .admin-bar .admin-view { margin-left: auto; }
 
     .back {
       display: inline-flex; align-items: center; gap: 8px;
       font-family: var(--f-label); font-size: 11px; font-weight: 600;
-      letter-spacing: .2em; color: var(--mist); text-transform: uppercase;
+      letter-spacing: .2em; color: var(--fog); text-transform: uppercase;
       text-decoration: none; margin-bottom: 32px; transition: color .15s;
     }
     .back:hover { color: var(--doom-bright); }
@@ -71,62 +84,135 @@
       text-shadow: 0 0 40px var(--doom-glow);
     }
 
-    .card {
-      background: var(--stone); border: 1px solid var(--doom); padding: 24px;
+    details.card, .card {
+      background: var(--stone); border: 1px solid var(--doom); padding: 0 20px; margin-bottom: 12px;
     }
+    .card { padding: 20px; }
+    details.card[open] { padding-bottom: 20px; }
 
-    .card-label {
-      font-family: var(--f-label); font-size: 10px; font-weight: 600;
+    summary, .card-label {
+      font-family: var(--f-label); font-size: 11px; font-weight: 600;
       letter-spacing: .28em; color: var(--doom-bright); text-transform: uppercase;
-      margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--edge);
+      padding: 16px 0; cursor: pointer; list-style-position: inside;
     }
+    .card-label { padding: 0 0 14px; cursor: default; }
+    details[open] > summary { border-bottom: 1px solid var(--edge); margin-bottom: 18px; }
 
-    .field { margin-bottom: 20px; }
-    .field:last-of-type { margin-bottom: 0; }
-
+    .field { margin-bottom: 16px; }
+    .field:last-child { margin-bottom: 0; }
     .field-label {
       display: block; font-family: var(--f-label); font-size: 10px; font-weight: 600;
       letter-spacing: .22em; color: var(--amber); text-transform: uppercase; margin-bottom: 5px;
     }
-    .field-hint {
-      display: block; font-size: 12px; color: var(--mist); margin-bottom: 7px; line-height: 1.4;
-    }
+    .field-hint { display: block; font-size: 12px; color: var(--fog); margin-bottom: 7px; line-height: 1.4; }
 
-    .field input, .field textarea {
+    input[type=text], input[type=number], input[type=password], input[type=datetime-local], textarea, select {
       width: 100%; background: var(--plate); border: 1px solid var(--edge);
       color: var(--bone); font-family: var(--f-body); font-size: 15px;
-      padding: 11px 13px; outline: none; transition: border-color .2s; resize: vertical;
+      padding: 10px 12px; outline: none; transition: border-color .2s; resize: vertical;
     }
-    .field input:focus, .field textarea:focus { border-color: var(--doom); }
-    .field input::placeholder, .field textarea::placeholder { color: var(--mist); }
-    .field textarea { min-height: 80px; }
+    input:focus, textarea:focus, select:focus { border-color: var(--doom-bright); }
+    textarea { min-height: 90px; }
+    input[type=color] { width: 56px; height: 36px; padding: 2px; background: var(--plate); border: 1px solid var(--edge); cursor: pointer; }
+    .check { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; }
+    .check input { accent-color: var(--doom-bright); width: 16px; height: 16px; margin: 0; }
 
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px 16px; margin-bottom: 16px; }
+    .grid .field { margin: 0; }
+
+    .row { display: flex; gap: 8px; }
+    .row > input { flex: 1; min-width: 0; }
+    .thumb { display: block; max-width: 100%; max-height: 120px; margin-top: 8px; border: 1px solid var(--edge); }
+
+    .btn {
+      background: var(--plate); color: var(--bone); border: 1px solid var(--edge);
+      font-family: var(--f-label); font-weight: 600; font-size: 12px;
+      letter-spacing: .12em; text-transform: uppercase; padding: 9px 14px; cursor: pointer;
+      transition: border-color .15s, color .15s; white-space: nowrap;
+    }
+    .btn:hover { border-color: var(--doom-bright); color: var(--white); }
+    .btn:focus-visible, .btn-save:focus-visible { outline: 2px solid var(--doom-bright); outline-offset: 2px; }
+    .btn.icon { padding: 6px 10px; font-size: 14px; }
+    .btn.danger:hover { border-color: #c84040; color: #ff8080; }
+
+    .block { border: 1px solid var(--edge); background: var(--void); padding: 14px; margin-bottom: 10px; }
+    .block-head { display: flex; align-items: center; gap: 6px; margin-bottom: 14px; }
+    .block-title {
+      flex: 1; font-family: var(--f-label); font-size: 13px; font-weight: 700;
+      letter-spacing: .14em; text-transform: uppercase; color: var(--white);
+    }
+    .block-title small { color: var(--fog); font-weight: 600; margin-right: 6px; }
+
+    .filas-row { display: flex; gap: 6px; margin-bottom: 6px; }
+    .subitem { background: var(--stone); padding: 12px; }
+    .subitem .block-title { font-size: 12px; }
+    .filas-row input { flex: 1; min-width: 0; }
+
+    .guest { border-top: 1px solid var(--edge); padding-top: 10px; margin-top: 10px; }
+    .guest .row { margin-bottom: 6px; flex-wrap: wrap; }
+    .guest .row > input { min-width: 140px; }
+    .guest-link { font-size: 12px; color: var(--fog); word-break: break-all; }
+
+    .savebar {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+      background: color-mix(in srgb, var(--void) 92%, transparent); border-top: 1px solid var(--doom);
+      padding: 12px 16px;
+    }
+    .savebar-in { max-width: 560px; margin-inline: auto; display: flex; align-items: center; gap: 12px; }
     .btn-save {
-      margin-top: 24px; width: 100%; background: var(--doom); color: var(--white);
+      flex: 1; background: var(--doom); color: var(--white);
       border: none; font-family: var(--f-label); font-weight: 700; font-size: 14px;
-      letter-spacing: .18em; text-transform: uppercase; padding: 15px; cursor: pointer;
-      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      letter-spacing: .18em; text-transform: uppercase; padding: 14px; cursor: pointer;
       transition: background .15s;
     }
     .btn-save:hover { background: var(--doom-mid); }
-    .btn-save:focus-visible { outline: 2px solid var(--doom-bright); outline-offset: 3px; }
-
-    .save-msg {
-      font-family: var(--f-label); font-size: 11px; letter-spacing: .15em;
-      text-transform: uppercase; text-align: center; margin-top: 12px; min-height: 1.4em;
-    }
+    .save-msg { font-family: var(--f-label); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; min-width: 110px; }
     .save-msg.ok  { color: var(--doom-bright); }
-    .save-msg.err { color: #c84040; }
+    .save-msg.err { color: #e05050; }
+    .savebar a { color: var(--fog); font-family: var(--f-label); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; }
+    .savebar a:hover { color: var(--doom-bright); }
 
-    .divider { height: 1px; background: var(--edge); margin-block: 20px; }
+    .fields .grid { margin-bottom: 16px; }
+    #preview { display: none; }
 
-    .preview-link {
-      display: block; text-align: center; margin-top: 20px;
-      font-family: var(--f-label); font-size: 11px; font-weight: 600;
-      letter-spacing: .18em; color: var(--mist); text-transform: uppercase;
-      text-decoration: none; transition: color .15s;
+    /* ══════════ PC: editor + vista previa ══════════ */
+    @media (min-width: 1100px) {
+      body { padding-inline: 32px; }
+      .admin-bar { margin-inline: -32px; padding-inline: 32px; }
+      .layout {
+        display: grid; grid-template-columns: minmax(520px, 680px) minmax(0, 1fr);
+        gap: 40px; max-width: 1700px; margin-inline: auto;
+      }
+      main { max-width: none; margin: 0; }
+      main { padding-bottom: 0; }
+      .savebar { position: sticky; margin-top: 32px; padding-inline: 0; border-top-color: var(--doom); }
+      .savebar-in { max-width: none; }
+
+      /* Campos cortos en dos columnas; los largos ocupan todo el ancho */
+      .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; }
+      .fields > .field { margin: 0; display: flex; flex-direction: column; justify-content: flex-end; }
+      .fields > .wide, .fields > .grid { grid-column: 1 / -1; }
+      .fields .grid { margin: 0; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+
+      #preview {
+        display: flex; flex-direction: column; position: sticky; top: 52px;
+        height: calc(100vh - 52px); padding-block: 24px;
+      }
+      .preview-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+      .preview-bar .card-label { padding: 0; margin-right: auto; }
+      .preview-bar select { width: auto; padding: 7px 10px; font-size: 13px; }
+      .btn.on { border-color: var(--doom-bright); color: var(--doom-bright); }
+      .preview-stage {
+        flex: 1; position: relative; overflow: hidden;
+        border: 1px solid var(--edge); background: var(--plate);
+        display: flex; justify-content: center; align-items: flex-start;
+      }
+      .preview-stage iframe { border: 0; background: #000; flex-shrink: 0; transform-origin: 0 0; }
+      .preview-stage.mobile { padding-top: 16px; }
+      .preview-stage.mobile iframe { width: 390px; height: calc(100% - 32px); border: 1px solid var(--edge); border-radius: 22px; }
+      .preview-stage.desktop { justify-content: flex-start; }
+      .preview-note { font-size: 12px; color: var(--fog); margin-top: 8px; }
     }
-    .preview-link:hover { color: var(--doom-bright); }
 
     @media (prefers-reduced-motion: reduce) {
       * { animation: none !important; transition: none !important; }
@@ -135,92 +221,821 @@
 </head>
 <body>
 
-<div id="doom-frame" aria-hidden="true"></div>
+<nav class="admin-bar" aria-label="Panel de administrador">
+  <span class="admin-brand">Invitaciones</span>
+  <a href="config.html" aria-current="page">Configuración</a>
+  <a href="res.html">Respuestas</a>
+  <a class="admin-view" href="index.html" target="_blank">Ver invitación ↗</a>
+</nav>
 
+<div class="layout">
 <main>
-  <a class="back" href="index.html">Volver a la invitación</a>
 
   <p class="page-eyebrow">Panel de administrador</p>
   <h1>CONFIGURACIÓN</h1>
 
-  <div class="card">
-    <div class="card-label">Contenido de la invitación</div>
-
+  <form class="card" id="login" hidden>
+    <div class="card-label">Acceso</div>
     <div class="field">
-      <label class="field-label" for="cfg-nombre">Nombre de la invitada</label>
-      <span class="field-hint">Aparece en la página como "Para [nombre]" en dorado.</span>
-      <input id="cfg-nombre" type="text" placeholder="Ej: Sofía">
+      <label class="field-label" for="pass">Contraseña de administrador</label>
+      <span class="field-hint">Se define en api.php ($ADMIN_PASS).</span>
+      <div class="row"><input id="pass" type="password" autocomplete="current-password"><button class="btn">Entrar</button></div>
     </div>
+    <div class="save-msg err" id="login-msg"></div>
+  </form>
 
-    <div class="divider"></div>
-
-    <div class="field">
-      <label class="field-label" for="cfg-t1">Texto — primera línea</label>
-      <span class="field-hint">Primera oración del párrafo de invitación.</span>
-      <input id="cfg-t1" type="text" placeholder="Avengers: Doomsday se estrena.">
+  <div class="card" id="events" hidden>
+    <div class="card-label">Evento</div>
+    <div class="row">
+      <select id="ev-select" aria-label="Evento a editar"></select>
+      <button class="btn danger" id="ev-delete" type="button">Eliminar</button>
     </div>
-
-    <div class="field">
-      <label class="field-label" for="cfg-t2">Texto — segunda línea</label>
-      <span class="field-hint">Segunda oración del párrafo de invitación.</span>
-      <textarea id="cfg-t2" placeholder="Pensé que podría estar cool verla juntos."></textarea>
+    <div class="field" style="margin-top:16px">
+      <label class="field-label" for="ev-new">Nuevo evento</label>
+      <span class="field-hint">Nombre corto, se usa en el link (ej: boda-ana).</span>
+      <div class="row">
+        <input id="ev-new" type="text" placeholder="boda-ana">
+        <button class="btn" id="ev-create" type="button">Crear</button>
+        <button class="btn" id="ev-dup" type="button">Duplicar actual</button>
+      </div>
     </div>
-
-    <div class="divider"></div>
-
-    <div class="field">
-      <label class="field-label" for="cfg-tc">Términos y condiciones</label>
-      <span class="field-hint">Si lo llenas, la invitada deberá aceptarlos antes de responder. Déjalo vacío para omitirlos.</span>
-      <textarea id="cfg-tc" placeholder="Ej: Esta invitación es personal e intransferible..."></textarea>
-    </div>
-
-    <button class="btn-save" id="btn-save">GUARDAR</button>
-    <div class="save-msg" id="save-msg"></div>
   </div>
 
-  <a class="preview-link" href="index.html" target="_blank">Ver invitación →</a>
+  <div id="editor" hidden>
+    <details class="card" open>
+      <summary>Invitados y acceso</summary>
+      <div id="guests"></div>
+    </details>
+
+    <div class="card">
+      <div class="card-label">Temporada / plantilla</div>
+      <span class="field-hint">Aplica colores, fuentes y partículas de una vez. Tus textos e imágenes no cambian.</span>
+      <div class="row">
+        <select id="preset"></select>
+        <button class="btn" id="apply-preset" type="button">Aplicar</button>
+      </div>
+    </div>
+
+    <div id="groups"></div>
+
+    <details class="card" open>
+      <summary>Secciones de la página</summary>
+      <span class="field-hint">Se muestran en este orden. Usa ↑ ↓ para moverlas.</span>
+      <div id="blocks"></div>
+      <div class="row" style="margin-top:14px">
+        <select id="new-type" aria-label="Tipo de sección"></select>
+        <button class="btn" id="add-block" type="button">+ Agregar sección</button>
+      </div>
+    </details>
+  </div>
+
+  <div class="savebar" id="savebar" hidden>
+    <div class="savebar-in">
+      <button class="btn-save" id="btn-save">Guardar</button>
+      <span class="save-msg" id="save-msg" role="status"></span>
+      <a href="index.html" target="_blank">Ver →</a>
+    </div>
+  </div>
 </main>
+
+<aside id="preview" aria-label="Vista previa">
+  <div class="preview-bar">
+    <span class="card-label">Vista previa</span>
+    <select id="pv-guest" aria-label="Ver como invitado"></select>
+    <button class="btn on" id="pv-mobile" type="button">Celular</button>
+    <button class="btn" id="pv-desktop" type="button">PC</button>
+  </div>
+  <div class="preview-stage mobile" id="pv-stage">
+    <iframe id="pv-frame" title="Vista previa de la invitación"></iframe>
+  </div>
+  <p class="preview-note">Muestra tus cambios al momento, aunque no hayas guardado. Aquí no se registran respuestas ni visitas.</p>
+</aside>
+</div>
+
 
 <script>
 (function(){
 
-  /* Cargar valores actuales */
-  fetch('api.php?config')
-    .then(function(r){ return r.json(); })
-    .then(function(cfg){
-      if (cfg.nombre) document.getElementById('cfg-nombre').value = cfg.nombre;
-      if (cfg.texto1) document.getElementById('cfg-t1').value     = cfg.texto1;
-      if (cfg.texto2)    document.getElementById('cfg-t2').value = cfg.texto2;
-      if (cfg.terminos)  document.getElementById('cfg-tc').value = cfg.terminos;
-    })
-    .catch(function(){});
+  /* ══════════════════════════════════════════════════
+     ESQUEMA — qué se puede editar y cómo
+     Campo: [clave, etiqueta, tipo, extra]
+     tipos: text, textarea, color, number, check, select, media, lista, filas
+  ══════════════════════════════════════════════════ */
+  var PARTICULAS = ['ninguna','runas','estrellas','nieve','hojas','confeti','corazones','burbujas'];
 
-  /* Guardar */
-  document.getElementById('btn-save').addEventListener('click', function(){
-    var cfg = {
-      nombre: document.getElementById('cfg-nombre').value.trim(),
-      texto1:    document.getElementById('cfg-t1').value.trim(),
-      texto2:    document.getElementById('cfg-t2').value.trim(),
-      terminos:  document.getElementById('cfg-tc').value.trim()
+  var GROUPS = [
+    ['meta', 'General', [
+      ['titulo', 'Título de la pestaña del navegador', 'text']
+    ]],
+    ['tema', 'Colores y fuentes', [
+      ['fondo', 'Fondo', 'color'], ['superficie', 'Tarjetas', 'color'], ['borde', 'Bordes', 'color'],
+      ['primario', 'Botón principal', 'color'], ['acento', 'Acento / brillos', 'color'], ['destacado', 'Nombre y etiquetas', 'color'],
+      ['texto', 'Texto', 'color'], ['texto_suave', 'Texto secundario', 'color'], ['titulos', 'Títulos', 'color'],
+      ['fuente_titulos', 'Fuente de títulos', 'text', 'Nombre exacto de Google Fonts, ej: Playfair Display'],
+      ['fuente_etiquetas', 'Fuente de etiquetas y botones', 'text'],
+      ['fuente_texto', 'Fuente de texto', 'text'],
+      ['diseno', 'Diseño en PC', 'select', ['dividido', 'centrado'],
+        'Dividido: si la primera sección es imagen o video, ocupa la mitad izquierda de la pantalla y se queda fija. Centrado: todo en un panel al centro. En celular siempre se ve en una columna.'],
+      ['botones', 'Forma de los botones', 'select', ['angular', 'redondeado', 'recto']],
+      ['marco', 'Marco brillante en los bordes de la pantalla', 'check']
+    ]],
+    ['fondo', 'Fondo de la página', [
+      ['imagen', 'Imagen o video de fondo', 'media', 'Vacío = solo el color de fondo del tema. Los videos se reproducen sin sonido y en bucle.'],
+      ['oscurecer', 'Oscurecer el fondo (0–90 %)', 'number', 'Súbelo si el texto no se lee bien sobre la imagen.'],
+      ['ajuste', 'Ajuste', 'select', ['cubrir', 'ajustar', 'estirar', 'mosaico', 'original'],
+        'Cubrir: llena la pantalla y recorta lo que sobra. Ajustar: se ve completa (puede dejar bordes). Estirar: llena sin recortar pero se deforma. Mosaico: se repite. Original: tamaño real.'],
+      ['movimiento', 'Al hacer scroll', 'select', ['estática', 'se mueve con la página', 'parallax'],
+        'Estática: se queda quieta. Se mueve con la página: sube junto con el contenido. Parallax: se desliza más lento que el contenido.'],
+      ['posicion', 'Punto de enfoque', 'select', ['centro', 'arriba', 'abajo', 'izquierda', 'derecha'], 'Qué parte de la imagen se prioriza al recortar.']
+    ]],
+    ['particulas', 'Partículas de fondo', [
+      ['tipo', 'Tipo', 'select', PARTICULAS],
+      ['color', 'Color', 'color'],
+      ['cantidad', 'Cantidad (0–200)', 'number'],
+      ['circulos', 'Círculos mágicos en las esquinas', 'check']
+    ]],
+    ['header', 'Barra de menú (encabezado)', [
+      ['visible', 'Mostrar barra de menú', 'check'],
+      ['fijo', 'Fija arriba al hacer scroll', 'check'],
+      ['logo', 'Logo (arriba a la izquierda)', 'media'],
+      ['texto', 'Texto junto al logo', 'text'],
+      ['enlaces', 'Enlaces del menú', 'filas', 'En "Destino" pon el número de una sección (ej: 6 lleva a la sección 6), una URL o mailto:/tel:.', ['Texto', 'Destino']]
+    ]],
+    ['footer', 'Pie de página', [
+      ['visible', 'Mostrar pie de página', 'check'],
+      ['texto', 'Texto', 'textarea']
+    ]]
+  ];
+
+  var BLOCKS = {
+    imagen: ['Imagen', [
+      ['src', 'Imagen', 'media'],
+      ['overlay', 'Imagen superpuesta abajo (ej. logo)', 'media'],
+      ['alt', 'Descripción de la imagen (accesibilidad)', 'text'],
+      ['ancho', 'Ancho', 'select', ['100%', '75%', '50%', '33%']],
+      ['alineacion', 'Posición', 'select', ['centro', 'izquierda', 'derecha']]
+    ], { src: '', overlay: '', alt: '', ancho: '100%', alineacion: 'centro' }],
+    video: ['Video', [
+      ['src', 'Video', 'media', 'Sube un archivo o pega un enlace de YouTube'],
+      ['autoplay', 'Reproducir automáticamente al entrar', 'check', 'Marcado: se reproduce solo, sin sonido, sin controles y no se puede pausar. Desmarcado: el invitado presiona play y tiene todos los controles.'],
+      ['loop', 'Repetir', 'check'],
+      ['ancho', 'Ancho', 'select', ['100%', '75%', '50%', '33%']],
+      ['alineacion', 'Posición', 'select', ['centro', 'izquierda', 'derecha']]
+    ], { src: '', autoplay: false, loop: false, ancho: '100%', alineacion: 'centro' }],
+    banner: ['Banner', [
+      ['texto', 'Texto principal', 'text'],
+      ['subtexto', 'Subtexto', 'text'],
+      ['imagen', 'Imagen de fondo', 'media'],
+      ['color', 'Color de fondo', 'color']
+    ], { texto: 'Texto del banner', subtexto: '', imagen: '', color: '' }],
+    nombre: ['Nombre del invitado', [
+      ['etiqueta', 'Texto encima', 'text'],
+      ['nombre', 'Nombre', 'text', 'Usa {nombre} para poner el nombre de cada invitado (sirve en cualquier texto).'],
+      ['segundo', 'Segundo nombre (opcional, debajo y más pequeño)', 'text', 'Usa {segundo} para poner el segundo nombre de cada invitado. Vacío = no se muestra.'],
+      ['imagen', 'Imagen en lugar del nombre (opcional)', 'media', 'Si subes una imagen, se muestra en vez del texto. El nombre se usa como descripción para lectores de pantalla.'],
+      ['tamano', 'Tamaño de la imagen', 'select', ['mediano', 'pequeño', 'grande']]
+    ], { etiqueta: 'Para', nombre: '{nombre}', segundo: '{segundo}', imagen: '', tamano: 'mediano' }],
+    texto: ['Texto', [
+      ['titulo', 'Título', 'text'],
+      ['contenido', 'Contenido', 'textarea', 'Admite **negrita**, *cursiva*, # títulos y listas con "- ". Deja una línea vacía entre párrafos.'],
+      ['destacado', 'Frase destacada (grande, al final)', 'text'],
+      ['alineacion', 'Alineación', 'select', ['centro', 'izquierda']]
+    ], { titulo: '', contenido: '', destacado: '', alineacion: 'centro' }],
+    evento: ['Datos del evento', [
+      ['filas', 'Filas', 'filas']
+    ], { filas: [{ etiqueta: 'Fecha', valor: '' }, { etiqueta: 'Hora', valor: '' }, { etiqueta: 'Lugar', valor: '' }] }],
+    encuesta: ['Encuesta', [
+      ['pregunta', 'Pregunta', 'text'],
+      ['opciones', 'Opciones (una por línea)', 'lista'],
+      ['multiple', 'Permitir elegir varias', 'check'],
+      ['boton', 'Texto del botón', 'text']
+    ], { pregunta: '', opciones: [], multiple: false, boton: 'Votar' }],
+    rsvp: ['Confirmación de asistencia', [
+      ['pedir_nombre', 'Pedir el nombre de quien responde (para invitaciones con varios invitados)', 'check'],
+      ['modo_no', 'Respuesta negativa', 'select', ['permitir', 'botón que huye', 'ocultar'],
+        'Permitir: pueden rechazar. Botón que huye: el botón de rechazar se escapa al intentar tocarlo, así que solo pueden aceptar. Ocultar: solo aparece el botón de aceptar.'],
+      ['boton_si', 'Botón "sí"', 'text'], ['boton_no', 'Botón "no"', 'text'],
+      ['estado_si', 'Etiqueta tras elegir "sí"', 'text'], ['estado_no', 'Etiqueta tras elegir "no"', 'text'],
+      ['etiqueta_comentario', 'Etiqueta del comentario', 'text'], ['placeholder', 'Texto de ejemplo del comentario', 'text'],
+      ['boton_enviar', 'Botón enviar', 'text'],
+      ['confirmacion', 'Título al confirmar', 'text'],
+      ['mensaje_si', 'Mensaje si va', 'text'], ['mensaje_no', 'Mensaje si no va', 'text'],
+      ['imagen_si', 'Imagen o GIF si acepta', 'media', 'Se muestra al elegir "sí" y en la pantalla final. También acepta videos cortos.'],
+      ['imagen_no', 'Imagen o GIF si rechaza', 'media'],
+      ['cal_inicio', 'Calendario: inicio del evento', 'fecha', 'Si lo llenas, al aceptar aparecen botones para agregarlo a Google Calendar, Apple u Outlook, con recordatorio un día antes.'],
+      ['cal_fin', 'Calendario: fin (opcional)', 'fecha', 'Vacío = 2 horas después del inicio.'],
+      ['cal_titulo', 'Calendario: título', 'text', 'Vacío = el título de la invitación.'],
+      ['cal_lugar', 'Calendario: lugar', 'text'],
+      ['cal_descripcion', 'Calendario: notas', 'textarea'],
+      ['terminos', 'Términos y condiciones', 'textarea', 'Si lo llenas, deberán aceptarlos antes de responder. Vacío = sin términos. Admite el mismo formato que Texto.']
+    ], { pedir_nombre: false, modo_no: 'permitir', imagen_si: '', imagen_no: '', boton_si: 'SÍ, VOY', boton_no: 'NO PODRÉ', estado_si: 'VOY', estado_no: 'NO VOY',
+         etiqueta_comentario: 'Comentario', placeholder: '¿Algún comentario?', boton_enviar: 'ENVIAR',
+         confirmacion: 'RECIBIDO', mensaje_si: '¡Nos vemos ahí!', mensaje_no: 'Gracias por avisar.', terminos: '' }],
+    contacto: ['Contacto y redes', [
+      ['titulo', 'Título (opcional)', 'text'],
+      ['mostrar_en', 'Dónde mostrarlo', 'select', ['en la página', 'barra de menú', 'pie de página'],
+        'En la página: donde la acomodes con ↑ ↓. Barra de menú: iconos pequeños arriba a la derecha (sin título). Pie de página: encima del texto del pie.'],
+      ['estilo', 'Estilo', 'select', ['iconos', 'botones con texto']],
+      ['items', 'Enlaces', 'items', '', [
+        ['red', 'Tipo', 'select', ['whatsapp', 'telefono', 'correo', 'ubicacion', 'facebook', 'instagram', 'tiktok', 'x', 'youtube', 'web', 'personalizado']],
+        ['valor', 'Número, usuario o enlace', 'text', 'WhatsApp/teléfono: número con lada, ej. 52 998 123 4567. Redes: tu usuario o el enlace completo. Ubicación: dirección o enlace de Maps.'],
+        ['texto', 'Texto (opcional)', 'text', 'Vacío = nombre de la red.'],
+        ['mensaje', 'Mensaje inicial (solo WhatsApp)', 'text'],
+        ['icono', 'Icono propio (opcional)', 'media', 'Reemplaza el icono incluido. Mejor PNG con fondo transparente.']
+      ], { red: 'instagram', valor: '', texto: '', mensaje: '', icono: '' }]
+    ], { titulo: '', mostrar_en: 'en la página', estilo: 'iconos', items: [{ red: 'whatsapp', valor: '', texto: '', mensaje: '', icono: '' }] }],
+    cuenta: ['Cuenta regresiva', [
+      ['titulo', 'Título', 'text'],
+      ['fecha', 'Fecha y hora objetivo', 'fecha', 'Se guarda con tu zona horaria: todos los invitados ven el mismo tiempo restante, estén donde estén.'],
+      ['mensaje_final', 'Mensaje al llegar a cero', 'text']
+    ], { titulo: 'Faltan', fecha: '', mensaje_final: '¡Llegó el día!' }],
+    separador: ['Separador', [], {}]
+  };
+
+  /* Temporadas: tema + partículas */
+  var PRESETS = {
+    'Doom (cine)':   { tema: { fondo:'#040706', superficie:'#0d130c', borde:'#1c2818', primario:'#1d5a2c', acento:'#4cc862', destacado:'#c87808', texto:'#bccebe', texto_suave:'#587860', titulos:'#dceeda', fuente_titulos:'Russo One', fuente_etiquetas:'Barlow Condensed', fuente_texto:'Barlow', botones:'angular', marco:true },
+                       particulas: { tipo:'runas', color:'#4cc862', cantidad:22, circulos:true } },
+    'Navidad':       { tema: { fondo:'#0b1a12', superficie:'#12261a', borde:'#1f3d2a', primario:'#b3202a', acento:'#e8c66a', destacado:'#e8c66a', texto:'#f1ece0', texto_suave:'#a8b8a8', titulos:'#ffffff', fuente_titulos:'Mountains of Christmas', fuente_etiquetas:'Oswald', fuente_texto:'Lato', botones:'redondeado', marco:true },
+                       particulas: { tipo:'nieve', color:'#ffffff', cantidad:70, circulos:false } },
+    'Halloween':     { tema: { fondo:'#0c0710', superficie:'#170e1c', borde:'#2c1a33', primario:'#d35400', acento:'#ff8c1a', destacado:'#9b59b6', texto:'#e9dff0', texto_suave:'#9a85a6', titulos:'#ffb347', fuente_titulos:'Creepster', fuente_etiquetas:'Oswald', fuente_texto:'Lato', botones:'angular', marco:true },
+                       particulas: { tipo:'hojas', color:'#ff8c1a', cantidad:30, circulos:false } },
+    'San Valentín':  { tema: { fondo:'#1a0a10', superficie:'#26101a', borde:'#3d1a2a', primario:'#c2185b', acento:'#ff6f91', destacado:'#ffb3c6', texto:'#fbe4ec', texto_suave:'#c79aab', titulos:'#ffffff', fuente_titulos:'Great Vibes', fuente_etiquetas:'Josefin Sans', fuente_texto:'Lora', botones:'redondeado', marco:true },
+                       particulas: { tipo:'corazones', color:'#ff6f91', cantidad:30, circulos:false } },
+    'Cumpleaños':    { tema: { fondo:'#120d2a', superficie:'#1c1640', borde:'#2e2660', primario:'#ff4f8b', acento:'#ffd23f', destacado:'#3ee6c4', texto:'#f1efff', texto_suave:'#a9a4d6', titulos:'#ffffff', fuente_titulos:'Fredoka', fuente_etiquetas:'Fredoka', fuente_texto:'Nunito', botones:'redondeado', marco:false },
+                       particulas: { tipo:'confeti', color:'#ffd23f', cantidad:80, circulos:false } },
+    'Boda':          { tema: { fondo:'#f8f4ee', superficie:'#ffffff', borde:'#e6dccd', primario:'#8a6d3b', acento:'#b89b5e', destacado:'#8a6d3b', texto:'#4a4036', texto_suave:'#8c7f70', titulos:'#2e2620', fuente_titulos:'Cormorant Garamond', fuente_etiquetas:'Montserrat', fuente_texto:'Lora', botones:'recto', marco:false },
+                       particulas: { tipo:'estrellas', color:'#b89b5e', cantidad:30, circulos:false } },
+    'Primavera':     { tema: { fondo:'#f3f8ef', superficie:'#ffffff', borde:'#d6e6cc', primario:'#4f9a5b', acento:'#e57fa3', destacado:'#4f9a5b', texto:'#33402f', texto_suave:'#748a6c', titulos:'#1f2b1c', fuente_titulos:'Pacifico', fuente_etiquetas:'Quicksand', fuente_texto:'Quicksand', botones:'redondeado', marco:false },
+                       particulas: { tipo:'burbujas', color:'#e57fa3', cantidad:25, circulos:false } },
+    'Elegante oscuro': { tema: { fondo:'#0a0a0c', superficie:'#141418', borde:'#26262c', primario:'#c9a646', acento:'#e6c56b', destacado:'#e6c56b', texto:'#e8e6e1', texto_suave:'#8f8c85', titulos:'#ffffff', fuente_titulos:'Playfair Display', fuente_etiquetas:'Montserrat', fuente_texto:'Lato', botones:'recto', marco:false },
+                       particulas: { tipo:'estrellas', color:'#e6c56b', cantidad:40, circulos:false } }
+  };
+
+
+  /* ══════════════════════════════════════════════════
+     AUTH
+  ══════════════════════════════════════════════════ */
+  var pass = '';
+  try { pass = sessionStorage.getItem('inv-admin') || ''; } catch (e) {}
+  var cfg = null;
+
+  function api(url, opts) {
+    opts = opts || {};
+    opts.headers = Object.assign({ 'X-Admin-Pass': pass }, opts.headers || {});
+    return fetch(url, opts).then(function(r){
+      if (r.status === 401) { showLogin('Contraseña incorrecta'); throw new Error('auth'); }
+      return r.json();
+    });
+  }
+
+  function showLogin(msg) {
+    document.getElementById('login').hidden = false;
+    document.getElementById('editor').hidden = true;
+    document.getElementById('savebar').hidden = true;
+    document.getElementById('login-msg').textContent = msg || '';
+    document.getElementById('pass').focus();
+  }
+
+  document.getElementById('login').addEventListener('submit', function(e){
+    e.preventDefault();
+    pass = document.getElementById('pass').value;
+    try { sessionStorage.setItem('inv-admin', pass); } catch (err) {}
+    start();
+  });
+
+  var current = '', saved = '';
+  var evSel = document.getElementById('ev-select');
+
+  /* ?eventos es solo admin: también valida la contraseña */
+  function start(select) {
+    api('api.php?eventos').then(function(list){
+      document.getElementById('login').hidden = true;
+      /* Este navegador es del admin: sus visitas a las invitaciones no se cuentan */
+      try { localStorage.setItem('inv-admin-device', '1'); } catch (err) {}
+      document.getElementById('events').hidden = false;
+      evSel.innerHTML = '';
+      list.forEach(function(ev){
+        evSel.appendChild(el('option', { value: ev.slug, textContent: ev.slug + ' — ' + ev.titulo + ' (' + ev.invitados + ' invitados)' }));
+      });
+      var slug = select || current || (list[0] && list[0].slug);
+      if (slug) { evSel.value = slug; openEvent(slug); }
+      else {
+        document.getElementById('editor').hidden = true;
+        document.getElementById('savebar').hidden = true;
+      }
+    }).catch(function(e){ if (e.message !== 'auth') showLogin('No se pudo conectar con api.php'); });
+  }
+
+  function openEvent(slug) {
+    api('api.php?admin&e=' + slug).then(function(data){
+      current = slug;
+      setCfg(data);
+    });
+  }
+
+  function setCfg(data) {
+    cfg = data || {};
+    GROUPS.forEach(function(g){ cfg[g[0]] = cfg[g[0]] || {}; });
+    cfg.secciones = cfg.secciones || [];
+    cfg.invitados = cfg.invitados || [];
+    saved = JSON.stringify(cfg);
+    fillGuestSelect();
+    refreshPreview();
+    document.getElementById('editor').hidden = false;
+    document.getElementById('savebar').hidden = false;
+    renderGuests();
+    renderGroups();
+    renderBlocks();
+  }
+
+  function dirty() { return cfg && JSON.stringify(cfg) !== saved; }
+
+
+  /* ══════════════════════════════════════════════════
+     VISTA PREVIA (PC): index.html?preview lee la config sin guardar de sessionStorage
+  ══════════════════════════════════════════════════ */
+  var pvFrame = document.getElementById('pv-frame');
+  var pvStage = document.getElementById('pv-stage');
+  var pvGuest = document.getElementById('pv-guest');
+  var pvDesktop = false, pvTimer = null;
+  var pvWide = matchMedia('(min-width: 1100px)');
+
+  function refreshPreview() {
+    if (!cfg || !pvWide.matches) return;
+    try {
+      sessionStorage.setItem('inv-preview', JSON.stringify(cfg));
+      sessionStorage.setItem('inv-preview-guest', pvGuest.value);
+    } catch (e) { return; }
+    /* Mantener el scroll de la vista previa al recargar */
+    var y = 0;
+    try { y = pvFrame.contentWindow.scrollY; } catch (e) {}
+    pvFrame.onload = function(){ try { pvFrame.contentWindow.scrollTo(0, y); } catch (e) {} };
+    if (pvFrame.src) pvFrame.contentWindow.location.reload();
+    else pvFrame.src = 'index.html?preview=1';
+  }
+  function schedulePreview() { clearTimeout(pvTimer); pvTimer = setTimeout(refreshPreview, 600); }
+
+  function fillGuestSelect() {
+    var cur = pvGuest.value;
+    pvGuest.innerHTML = '<option value="">Link general</option>' + (cfg.invitados || []).map(function(g, i){
+      return '<option value="' + i + '">' + (g.nombre || 'Invitado ' + (i + 1)).replace(/</g, '&lt;') + '</option>';
+    }).join('');
+    pvGuest.value = cur && cfg.invitados[cur] ? cur : (cfg.invitados.length ? '0' : '');
+  }
+
+  /* PC: el iframe se dibuja a 1280px y se escala al ancho disponible */
+  function sizePreview() {
+    if (!pvDesktop) { pvFrame.style.cssText = ''; return; }
+    var s = pvStage.clientWidth / 1280;
+    pvFrame.style.width = '1280px';
+    pvFrame.style.height = (pvStage.clientHeight / s) + 'px';
+    pvFrame.style.transform = 'scale(' + s + ')';
+  }
+  function setDevice(desktop) {
+    pvDesktop = desktop;
+    pvStage.className = 'preview-stage ' + (desktop ? 'desktop' : 'mobile');
+    document.getElementById('pv-desktop').classList.toggle('on', desktop);
+    document.getElementById('pv-mobile').classList.toggle('on', !desktop);
+    sizePreview();
+  }
+  document.getElementById('pv-mobile').addEventListener('click', function(){ setDevice(false); });
+  document.getElementById('pv-desktop').addEventListener('click', function(){ setDevice(true); });
+  pvGuest.addEventListener('change', refreshPreview);
+  window.addEventListener('resize', sizePreview);
+  pvWide.addEventListener('change', refreshPreview);
+
+  /* Cualquier cambio en el editor actualiza la vista previa */
+  ['input', 'change', 'click'].forEach(function(t){
+    document.getElementById('editor').addEventListener(t, function(e){
+      if (t === 'click' && !e.target.closest('button')) return;
+      if (e.target.closest('#guests')) fillGuestSelect();
+      schedulePreview();
+    });
+  });
+  window.addEventListener('beforeunload', function(e){ if (dirty()) e.preventDefault(); });
+
+  evSel.addEventListener('change', function(){
+    if (dirty() && !confirm('Hay cambios sin guardar en "' + current + '". ¿Descartarlos?')) { evSel.value = current; return; }
+    openEvent(evSel.value);
+  });
+
+  function slugify(s) {
+    return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);
+  }
+
+  function createEvent(copy) {
+    var slug = slugify(document.getElementById('ev-new').value);
+    if (!slug) return flash('err', 'Escribe un nombre');
+    if ([].some.call(evSel.options, function(o){ return o.value === slug; })) return flash('err', 'Ya existe');
+    var data = copy ? JSON.parse(JSON.stringify(cfg)) : {
+      meta: { titulo: document.getElementById('ev-new').value.trim() },
+      tema: Object.assign({}, PRESETS['Elegante oscuro'].tema),
+      particulas: Object.assign({}, PRESETS['Elegante oscuro'].particulas),
+      header: { visible: true, fijo: true, logo: '', texto: '', enlaces: [] },
+      fondo: { imagen: '', oscurecer: 40, ajuste: 'cubrir', movimiento: 'estática', posicion: 'centro' },
+      footer: { visible: false, texto: '' },
+      secciones: ['nombre', 'texto', 'evento', 'rsvp'].map(function(t){
+        var b = JSON.parse(JSON.stringify(BLOCKS[t][2])); b.tipo = t; return b;
+      }),
+      codigo: '', invitados: []
     };
-    var msg = document.getElementById('save-msg');
+    if (copy) { data.invitados = []; }
+    api('api.php?admin&e=' + slug, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
+      .then(function(){ document.getElementById('ev-new').value = ''; current = ''; start(slug); flash('ok', 'Evento creado'); });
+  }
+  document.getElementById('ev-create').addEventListener('click', function(){ createEvent(false); });
+  document.getElementById('ev-dup').addEventListener('click', function(){ if (cfg) createEvent(true); });
 
-    fetch('api.php?config', {
+  document.getElementById('ev-delete').addEventListener('click', function(){
+    if (!current || !confirm('¿Eliminar el evento "' + current + '" y todas sus respuestas? No se puede deshacer.')) return;
+    api('api.php?admin&delete&e=' + current, { method: 'POST' }).then(function(){ current = ''; cfg = null; start(); });
+  });
+
+  if (pass) start(); else showLogin();
+
+
+  /* ══════════════════════════════════════════════════
+     INVITADOS
+  ══════════════════════════════════════════════════ */
+  function linkFor(g) {
+    var base = location.href.replace(/config\.html.*$/, '') + 'index.html?e=' + current;
+    return g ? base + '&para=' + g.slug : base;
+  }
+
+  /* Slug único a partir del nombre: es lo que aparece en el link */
+  function guestSlug(g) {
+    var base = slugify(g.nombre) || 'invitado', s = base, n = 2;
+    while (cfg.invitados.some(function(o){ return o !== g && o.slug === s; })) s = base + '-' + n++;
+    g.slug = s;
+  }
+
+  function copyBtn(getText) {
+    var b = el('button', { className: 'btn', type: 'button', textContent: 'Copiar link' });
+    b.addEventListener('click', function(){
+      navigator.clipboard.writeText(getText()).then(function(){
+        b.textContent = '✓ Copiado';
+        setTimeout(function(){ b.textContent = 'Copiar link'; }, 1500);
+      });
+    });
+    return b;
+  }
+
+  function renderGuests() {
+    var box = document.getElementById('guests');
+    box.innerHTML = '';
+    box.appendChild(field(cfg, ['codigo', 'Código general del evento', 'text',
+      'Si lo llenas, el link general y los invitados sin código propio deberán escribirlo para entrar. Vacío = sin código.']));
+
+    var general = el('div', { className: 'field' });
+    general.appendChild(el('span', { className: 'field-label', textContent: 'Link general (sin nombre)' }));
+    var gr = el('div', { className: 'row' });
+    gr.appendChild(el('span', { className: 'guest-link', textContent: linkFor(null) }));
+    gr.appendChild(copyBtn(function(){ return linkFor(null); }));
+    general.appendChild(gr);
+    box.appendChild(general);
+
+    var bulk = el('textarea', { id: 'bulk', placeholder: 'Ana López\nCarlos\nFamilia Pérez' });
+    var bf = el('div', { className: 'field' });
+    bf.appendChild(el('label', { className: 'field-label', htmlFor: 'bulk', textContent: 'Agregar invitados (uno por línea)' }));
+    bf.appendChild(bulk);
+    var addB = el('button', { className: 'btn', type: 'button', textContent: '+ Agregar' });
+    addB.style.marginTop = '6px';
+    addB.addEventListener('click', function(){
+      bulk.value.split('\n').map(function(s){ return s.trim(); }).filter(Boolean).forEach(function(n){
+        var g = { nombre: n, slug: '', codigo: '' };
+        cfg.invitados.push(g);
+        guestSlug(g);
+      });
+      renderGuests();
+    });
+    bf.appendChild(addB);
+    box.appendChild(bf);
+
+    cfg.invitados.forEach(function(g, i){
+      var row = el('div', { className: 'guest' });
+      var r1 = el('div', { className: 'row' });
+      var name = el('input', { type: 'text', value: g.nombre || '', placeholder: 'Nombre' });
+      var second = el('input', { type: 'text', value: g.segundo || '', placeholder: 'Segundo nombre (opcional)' });
+      var code = el('input', { type: 'text', value: g.codigo || '', placeholder: 'Código (opcional)' });
+      second.setAttribute('aria-label', 'Segundo nombre de ' + (g.nombre || 'invitado'));
+      second.addEventListener('input', function(){ g.segundo = second.value.trim(); });
+      name.setAttribute('aria-label', 'Nombre del invitado');
+      code.setAttribute('aria-label', 'Código de acceso de ' + (g.nombre || 'invitado'));
+      code.style.flex = '.6';
+      var link = el('div', { className: 'guest-link', textContent: linkFor(g) });
+      name.addEventListener('input', function(){ g.nombre = name.value; guestSlug(g); link.textContent = linkFor(g); });
+      code.addEventListener('input', function(){ g.codigo = code.value.trim(); });
+      var del = el('button', { className: 'btn icon danger', type: 'button', textContent: '✕' });
+      del.setAttribute('aria-label', 'Quitar invitado');
+      del.addEventListener('click', function(){ cfg.invitados.splice(i, 1); renderGuests(); });
+      r1.appendChild(name); r1.appendChild(second); r1.appendChild(code); r1.appendChild(del);
+      var r2 = el('div', { className: 'row' });
+      r2.style.alignItems = 'center';
+      link.style.flex = '1';
+      r2.appendChild(link);
+      r2.appendChild(copyBtn(function(){ return linkFor(g); }));
+      row.appendChild(r1); row.appendChild(r2);
+      box.appendChild(row);
+    });
+  }
+
+
+  /* ══════════════════════════════════════════════════
+     CAMPOS
+  ══════════════════════════════════════════════════ */
+  var uid = 0;
+
+  function el(tag, attrs, html) {
+    var e = document.createElement(tag);
+    for (var k in (attrs || {})) e[k] = attrs[k];
+    if (html != null) e.innerHTML = html;
+    return e;
+  }
+
+  /* Crea el control para obj[f[0]] y lo mantiene sincronizado */
+  function field(obj, f) {
+    var key = f[0], label = f[1], type = f[2], extra = f[3];
+    var id = 'f' + (++uid);
+    var wrap = el('div', { className: 'field' });
+
+    if (type === 'check') {
+      var cb = el('input', { type: 'checkbox', id: id, checked: obj[key] !== false && !!obj[key] });
+      cb.addEventListener('change', function(){ obj[key] = cb.checked; });
+      var lab = el('label', { className: 'check', htmlFor: id });
+      lab.appendChild(cb);
+      lab.appendChild(document.createTextNode(label));
+      wrap.appendChild(lab);
+      if (typeof extra === 'string') {
+        var h = el('span', { className: 'field-hint', textContent: extra });
+        h.style.margin = '6px 0 0 26px';
+        wrap.appendChild(h);
+      }
+      return wrap;
+    }
+
+    wrap.appendChild(el('label', { className: 'field-label', htmlFor: id, textContent: label }));
+    var hint = typeof extra === 'string' ? extra : f[4];
+    if (hint && typeof hint === 'string') wrap.appendChild(el('span', { className: 'field-hint', textContent: hint }));
+
+    var input;
+    if (type === 'textarea' || type === 'lista') {
+      input = el('textarea', { id: id });
+      input.value = type === 'lista' ? (obj[key] || []).join('\n') : (obj[key] || '');
+      input.addEventListener('input', function(){
+        obj[key] = type === 'lista'
+          ? input.value.split('\n').map(function(s){ return s.trim(); }).filter(Boolean)
+          : input.value;
+      });
+    } else if (type === 'select') {
+      input = el('select', { id: id });
+      extra.forEach(function(o){ input.appendChild(el('option', { value: o, textContent: o })); });
+      input.value = obj[key] || extra[0];
+      input.addEventListener('change', function(){ obj[key] = input.value; });
+    } else if (type === 'color') {
+      input = el('input', { type: 'color', id: id, value: obj[key] || '#000000' });
+      input.addEventListener('input', function(){ obj[key] = input.value; });
+    } else if (type === 'fecha') {
+      /* Guarda la hora local con su desfase (ej. 2026-12-16T18:30-06:00) para que sea la misma en cualquier país */
+      input = el('input', { type: 'datetime-local', id: id, value: (obj[key] || '').slice(0, 16) });
+      input.addEventListener('input', function(){
+        if (!input.value) { obj[key] = ''; return; }
+        var off = -new Date(input.value).getTimezoneOffset();
+        var abs = Math.abs(off);
+        obj[key] = input.value + (off >= 0 ? '+' : '-') + String(Math.floor(abs / 60)).padStart(2, '0') + ':' + String(abs % 60).padStart(2, '0');
+      });
+    } else if (type === 'number') {
+      input = el('input', { type: 'number', id: id, value: obj[key] == null ? '' : obj[key], min: 0, max: 200 });
+      input.addEventListener('input', function(){ obj[key] = input.value === '' ? 0 : +input.value; });
+    } else if (type === 'filas') {
+      wrap.appendChild(filas(obj, key, f[4]));
+      return wrap;
+    } else if (type === 'items') {
+      wrap.appendChild(itemList(obj, key, f[4], f[5]));
+      return wrap;
+    } else {
+      input = el('input', { type: 'text', id: id, value: obj[key] || '' });
+      input.addEventListener('input', function(){ obj[key] = input.value; });
+    }
+
+    if (type === 'media') {
+      var row = el('div', { className: 'row' });
+      var file = el('input', { type: 'file', accept: 'image/*,video/*', hidden: true });
+      var up = el('button', { className: 'btn', type: 'button', textContent: 'Subir' });
+      var clear = el('button', { className: 'btn icon danger', type: 'button', textContent: '✕', title: 'Quitar' });
+      clear.setAttribute('aria-label', 'Quitar archivo');
+      input.placeholder = 'Ruta o URL';
+      row.appendChild(input); row.appendChild(up); row.appendChild(clear); row.appendChild(file);
+      wrap.appendChild(row);
+      var thumb = el('div');
+      wrap.appendChild(thumb);
+
+      var preview = function(){
+        var v = obj[key] || '';
+        thumb.innerHTML = '';
+        if (/\.(jpe?g|png|gif|webp|avif)$/i.test(v) || /^data:image/.test(v)) thumb.appendChild(el('img', { className: 'thumb', src: v, alt: '' }));
+        else if (/\.(mp4|webm|ogv|mov)$/i.test(v)) thumb.appendChild(el('video', { className: 'thumb', src: v, muted: true }));
+      };
+      input.addEventListener('change', preview);
+      up.addEventListener('click', function(){ file.click(); });
+      clear.addEventListener('click', function(){ obj[key] = input.value = ''; preview(); });
+      file.addEventListener('change', function(){
+        if (!file.files[0]) return;
+        var fd = new FormData();
+        fd.append('file', file.files[0]);
+        up.textContent = 'Subiendo…'; up.disabled = true;
+        api('api.php?upload', { method: 'POST', body: fd }).then(function(res){
+          if (!res.ok) throw new Error(res.error || 'Error');
+          obj[key] = input.value = res.url;
+          preview();
+        }).catch(function(e){
+          if (e.message !== 'auth') flash('err', e.message === 'Error' || !e.message ? 'Error al subir' : e.message);
+        }).then(function(){ up.textContent = 'Subir'; up.disabled = false; file.value = ''; });
+      });
+      preview();
+      return wrap;
+    }
+
+    wrap.appendChild(input);
+    return wrap;
+  }
+
+  /* Lista de elementos con sus propios campos (ej. enlaces de contacto) */
+  function itemList(obj, key, sub, def) {
+    var box = el('div');
+    obj[key] = obj[key] || [];
+    function draw() {
+      box.innerHTML = '';
+      var list = obj[key];
+      list.forEach(function(it, i){
+        var card = el('div', { className: 'block subitem' });
+        var head = el('div', { className: 'block-head' });
+        head.appendChild(el('div', { className: 'block-title' }, '<small>' + (i + 1) + '</small>' + (it.red || 'elemento')));
+        [['↑', 'Subir', -1], ['↓', 'Bajar', 1]].forEach(function(m){
+          var b = el('button', { className: 'btn icon', type: 'button', textContent: m[0], disabled: i + m[2] < 0 || i + m[2] >= list.length });
+          b.setAttribute('aria-label', m[1]);
+          b.addEventListener('click', function(){ list.splice(i + m[2], 0, list.splice(i, 1)[0]); draw(); });
+          head.appendChild(b);
+        });
+        var del = el('button', { className: 'btn icon danger', type: 'button', textContent: '✕' });
+        del.setAttribute('aria-label', 'Quitar');
+        del.addEventListener('click', function(){ list.splice(i, 1); draw(); });
+        head.appendChild(del);
+        card.appendChild(head);
+        fieldsInto(card, it, sub);
+        /* El título de la tarjeta sigue al tipo elegido */
+        card.querySelector('select').addEventListener('change', function(){ head.firstChild.innerHTML = '<small>' + (i + 1) + '</small>' + it.red; });
+        box.appendChild(card);
+      });
+      var add = el('button', { className: 'btn', type: 'button', textContent: '+ Agregar' });
+      add.addEventListener('click', function(){ list.push(JSON.parse(JSON.stringify(def))); draw(); });
+      box.appendChild(add);
+    }
+    draw();
+    return box;
+  }
+
+  /* Lista editable de pares etiqueta/valor */
+  function filas(obj, key, ph) {
+    ph = ph || ['Etiqueta', 'Valor'];
+    var box = el('div');
+    obj[key] = obj[key] || [];
+    function draw() {
+      box.innerHTML = '';
+      obj[key].forEach(function(r, i){
+        var row = el('div', { className: 'filas-row' });
+        var a = el('input', { type: 'text', value: r.etiqueta || '', placeholder: ph[0] });
+        var b = el('input', { type: 'text', value: r.valor || '', placeholder: ph[1] });
+        a.setAttribute('aria-label', ph[0]); b.setAttribute('aria-label', ph[1]);
+        a.style.flex = '.6';
+        a.addEventListener('input', function(){ r.etiqueta = a.value; });
+        b.addEventListener('input', function(){ r.valor = b.value; });
+        var del = el('button', { className: 'btn icon danger', type: 'button', textContent: '✕' });
+        del.setAttribute('aria-label', 'Quitar fila');
+        del.addEventListener('click', function(){ obj[key].splice(i, 1); draw(); });
+        row.appendChild(a); row.appendChild(b); row.appendChild(del);
+        box.appendChild(row);
+      });
+      var add = el('button', { className: 'btn', type: 'button', textContent: '+ Fila' });
+      add.addEventListener('click', function(){ obj[key].push({ etiqueta: '', valor: '' }); draw(); });
+      box.appendChild(add);
+    }
+    draw();
+    return box;
+  }
+
+  /* Agrupa los campos de color en una cuadrícula compacta */
+  var WIDE = ['textarea', 'lista', 'media', 'filas', 'items'];
+  function fieldsInto(container, obj, fields) {
+    var form = el('div', { className: 'fields' });
+    container.appendChild(form);
+    var grid = null;
+    fields.forEach(function(f){
+      if (f[2] === 'color') {
+        if (!grid) { grid = el('div', { className: 'grid' }); form.appendChild(grid); }
+        grid.appendChild(field(obj, f));
+      } else {
+        grid = null;
+        var w = field(obj, f);
+        if (WIDE.indexOf(f[2]) !== -1) w.classList.add('wide');
+        form.appendChild(w);
+      }
+    });
+  }
+
+
+  /* ══════════════════════════════════════════════════
+     GRUPOS Y SECCIONES
+  ══════════════════════════════════════════════════ */
+  function renderGroups() {
+    var box = document.getElementById('groups');
+    box.innerHTML = '';
+    GROUPS.forEach(function(g){
+      var d = el('details', { className: 'card' });
+      d.appendChild(el('summary', { textContent: g[1] }));
+      fieldsInto(d, cfg[g[0]], g[2]);
+      box.appendChild(d);
+    });
+  }
+
+  function renderBlocks() {
+    var box = document.getElementById('blocks');
+    box.innerHTML = '';
+    cfg.secciones.forEach(function(b, i){
+      var def = BLOCKS[b.tipo];
+      if (!def) return;
+      var card = el('div', { className: 'block' });
+      var head = el('div', { className: 'block-head' });
+      head.appendChild(el('div', { className: 'block-title' }, '<small>' + (i + 1) + '</small>' + def[0]));
+
+      [['↑', 'Subir', -1], ['↓', 'Bajar', 1]].forEach(function(m){
+        var btn = el('button', { className: 'btn icon', type: 'button', textContent: m[0], disabled: i + m[2] < 0 || i + m[2] >= cfg.secciones.length });
+        btn.setAttribute('aria-label', m[1] + ' sección');
+        btn.addEventListener('click', function(){
+          var s = cfg.secciones;
+          s.splice(i + m[2], 0, s.splice(i, 1)[0]);
+          renderBlocks();
+        });
+        head.appendChild(btn);
+      });
+      var del = el('button', { className: 'btn icon danger', type: 'button', textContent: '✕' });
+      del.setAttribute('aria-label', 'Eliminar sección');
+      del.addEventListener('click', function(){
+        if (!confirm('¿Eliminar la sección "' + def[0] + '"?')) return;
+        cfg.secciones.splice(i, 1);
+        renderBlocks();
+      });
+      head.appendChild(del);
+
+      card.appendChild(head);
+      fieldsInto(card, b, def[1]);
+      box.appendChild(card);
+    });
+  }
+
+  var sel = document.getElementById('new-type');
+  Object.keys(BLOCKS).forEach(function(k){ sel.appendChild(el('option', { value: k, textContent: BLOCKS[k][0] })); });
+  document.getElementById('add-block').addEventListener('click', function(){
+    var b = JSON.parse(JSON.stringify(BLOCKS[sel.value][2]));
+    b.tipo = sel.value;
+    if (b.tipo === 'encuesta') b.id = Date.now().toString(36);
+    cfg.secciones.push(b);
+    renderBlocks();
+  });
+
+  var presetSel = document.getElementById('preset');
+  Object.keys(PRESETS).forEach(function(k){ presetSel.appendChild(el('option', { value: k, textContent: k })); });
+  document.getElementById('apply-preset').addEventListener('click', function(){
+    var p = PRESETS[presetSel.value];
+    Object.assign(cfg.tema, p.tema);
+    Object.assign(cfg.particulas, p.particulas);
+    renderGroups();
+    flash('ok', 'Aplicada — guarda para publicar');
+  });
+
+
+  /* ══════════════════════════════════════════════════
+     GUARDAR
+  ══════════════════════════════════════════════════ */
+  var msgTimer;
+  function flash(cls, text) {
+    var m = document.getElementById('save-msg');
+    m.className = 'save-msg ' + cls;
+    m.textContent = text;
+    clearTimeout(msgTimer);
+    msgTimer = setTimeout(function(){ m.textContent = ''; }, 3500);
+  }
+
+  document.getElementById('btn-save').addEventListener('click', function(){
+    api('api.php?admin&e=' + current, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(cfg)
-    })
-    .then(function(r){ return r.json(); })
-    .then(function(res){
-      msg.className = 'save-msg ' + (res.ok ? 'ok' : 'err');
-      msg.textContent = res.ok ? '✓ GUARDADO CORRECTAMENTE' : 'ERROR AL GUARDAR';
-      setTimeout(function(){ msg.textContent = ''; }, 3000);
-    })
-    .catch(function(){
-      msg.className = 'save-msg err';
-      msg.textContent = 'Error — revisa que api.php esté activo en el servidor';
-      setTimeout(function(){ msg.textContent = ''; }, 4000);
-    });
+    }).then(function(res){
+      if (res.ok) saved = JSON.stringify(cfg);
+      flash(res.ok ? 'ok' : 'err', res.ok ? '✓ Guardado' : 'Error al guardar');
+    }).catch(function(e){ if (e.message !== 'auth') flash('err', 'Error de conexión'); });
   });
 
 })();

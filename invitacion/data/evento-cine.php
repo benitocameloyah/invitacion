@@ -1,0 +1,125 @@
+<?php exit; ?>
+{
+    "meta": {
+        "titulo": "Avengers: Doomsday"
+    },
+    "tema": {
+        "fondo": "#040706",
+        "superficie": "#0d130c",
+        "borde": "#1c2818",
+        "primario": "#1d5a2c",
+        "acento": "#4cc862",
+        "destacado": "#c87808",
+        "texto": "#bccebe",
+        "texto_suave": "#a5e3bd",
+        "titulos": "#dceeda",
+        "fuente_titulos": "Russo One",
+        "fuente_etiquetas": "Barlow Condensed",
+        "fuente_texto": "Barlow",
+        "botones": "angular",
+        "marco": true
+    },
+    "particulas": {
+        "tipo": "runas",
+        "color": "#4cc862",
+        "cantidad": 40,
+        "circulos": true
+    },
+    "header": {
+        "visible": true,
+        "logo": "uploads\/d70851568d7f9664.png",
+        "texto": "Iniciativa Avengers",
+        "fijo": true,
+        "enlaces": []
+    },
+    "footer": {
+        "visible": true,
+        "texto": "by: Dexterrock"
+    },
+    "secciones": [
+        {
+            "src": "https:\/\/www.youtube.com\/watch?v=f17J3AXVK5w",
+            "autoplay": true,
+            "loop": true,
+            "ancho": "100%",
+            "alineacion": "centro",
+            "tipo": "video"
+        },
+        {
+            "tipo": "nombre",
+            "etiqueta": "Para",
+            "nombre": "Grecia"
+        },
+        {
+            "tipo": "texto",
+            "titulo": "",
+            "contenido": "Tengo una invitación para ti\n\nHay películas que se disfrutan más en buena compañía.",
+            "destacado": "¿Vamos al cine?",
+            "alineacion": "centro"
+        },
+        {
+            "tipo": "evento",
+            "filas": [
+                {
+                    "etiqueta": "Fecha",
+                    "valor": "16 de diciembre · 2026"
+                },
+                {
+                    "etiqueta": "Hora",
+                    "valor": "6:30 pm"
+                },
+                {
+                    "etiqueta": "Lugar",
+                    "valor": "La Gran Plaza — Cancún"
+                }
+            ]
+        },
+        {
+            "tipo": "rsvp",
+            "pedir_nombre": false,
+            "boton_si": "SÍ, VOY",
+            "boton_no": "ESTA VEZ PASO",
+            "estado_si": "VOY",
+            "estado_no": "PASO",
+            "etiqueta_comentario": "Comentario",
+            "placeholder": "¿Algún comentario?",
+            "boton_enviar": "ENVIAR",
+            "confirmacion": "RECIBIDO",
+            "mensaje_si": "Te mando los detalles.",
+            "mensaje_no": "Sin problema.",
+            "terminos": "# TÉRMINOS Y CONDICIONES DE LA EXPERIENCIA CINEMATOGRÁFICA\n\n**Última actualización:** 19 de noviembre de 2026.\n\nBienvenida a esta invitación. Antes de continuar, te invitamos a leer los siguientes términos y condiciones que regulan la participación en esta experiencia cinematográfica.\n\nAl aceptar esta invitación, la persona participante manifiesta su conformidad con las siguientes disposiciones:\n\n### 1. OBJETO DE LA INVITACIÓN\n\nEl presente documento tiene como finalidad establecer las condiciones para asistir a una función cinematográfica en compañía del titular de esta invitación.\n\nLa actividad contempla disfrutar de una película, compartir un buen momento y, preferentemente, crear un recuerdo agradable.\n\n### 2. BENEFICIOS INCLUIDOS\n\nLa aceptación de esta invitación dará acceso a los siguientes beneficios:\n\n- **Palomitas:** Una dotación de palomitas para disfrutar durante la función. Su sabor estará sujeto a disponibilidad y negociación previa.\n- **Playera conmemorativa:** Una playera temática inspirada en la película, diseñada especialmente para esta ocasión.\n- **Buena compañía:** Servicio incluido sin costo adicional, sujeto a disponibilidad permanente.\n- **Conversación:** Acceso ilimitado a pláticas antes y después de la función.\n- **Atención personalizada:** Se harán esfuerzos razonables para garantizar una experiencia agradable.\n\n### 3. POLÍTICA DE PRIVACIDAD\n\nLa información proporcionada durante esta invitación será tratada con absoluta discreción.\n\nEl titular se compromete a:\n\n- No divulgar conversaciones privadas.\n- No compartir fotografías sin autorización.\n- No utilizar información personal con fines comerciales.\n- No revelar a terceros los detalles de esta invitación sin consentimiento.\n\nLa sonrisa de la participante podrá ser considerada información confidencial de alto valor sentimental.\n\n### 4. POLÍTICA DE CANCELACIONES\n\nLa participante podrá cancelar su asistencia en cualquier momento, sin penalizaciones, cargos ocultos ni necesidad de justificar su decisión.\n\nEn caso de imprevistos, ambas partes podrán acordar una nueva fecha, siempre que exista interés mutuo.\n\n### 5. CLÁUSULA DE EXPECTATIVAS\n\nLa aceptación de esta invitación no implica compromisos sentimentales, obligaciones futuras ni acuerdos de exclusividad.\n\nEl único compromiso esperado es pasar un buen rato y disfrutar de la película.\n\nCualquier experiencia adicional será completamente voluntaria.\n\n### 6. CONDICIONES ESPECIALES\n\nSe establecen las siguientes disposiciones adicionales:\n\n- Se permite reír durante la película, siempre que no se interrumpan escenas importantes.\n- Se autoriza compartir palomitas, previa negociación de cantidades.\n- Está permitido comentar teorías sobre la película antes y después de la función.\n- Se recomienda llegar con entusiasmo y disposición para pasarla bien.\n- Los spoilers quedan estrictamente prohibidos.\n\n### 7. VIGENCIA DEL DOCUMENTO\n\nEstos términos entrarán en vigor únicamente cuando la participante manifieste voluntariamente su aceptación.\n\nLa invitación no tiene fecha de caducidad emocional, aunque se recomienda aprovecharla mientras la cartelera lo permita.\n\n### 8. DECLARACIÓN FINAL\n\nEl titular de esta invitación declara que su intención principal es compartir una película contigo, disfrutar de tu compañía y hacer que la experiencia sea especial.\n\nNo existen cargos adicionales, letras pequeñas ni condiciones ocultas.\n\n**Gracias por considerar esta invitación.**\n\n*Atentamente: El organizador de esta experiencia cinematográfica.*",
+            "modo_no": "permitir",
+            "imagen_no": "https:\/\/media1.tenor.com\/m\/Taxjv673XhoAAAAC\/releasing-power-cyclops.gif"
+        },
+        {
+            "titulo": "",
+            "estilo": "iconos",
+            "items": [
+                {
+                    "red": "whatsapp",
+                    "valor": "9983179980",
+                    "texto": "",
+                    "mensaje": "",
+                    "icono": ""
+                }
+            ],
+            "tipo": "contacto",
+            "mostrar_en": "barra de menú"
+        }
+    ],
+    "codigo": "",
+    "invitados": [
+        {
+            "nombre": "Grecia",
+            "slug": "grecia",
+            "codigo": ""
+        }
+    ],
+    "fondo": {
+        "imagen": "uploads\/b4639a62db313be2.jpg",
+        "oscurecer": 50,
+        "ajuste": "cubrir",
+        "movimiento": "se mueve con la página",
+        "posicion": "centro"
+    }
+}

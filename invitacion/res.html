@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Respuesta — Doomsday</title>
+  <title>Respuestas</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Russo+One&family=Barlow:wght@400;500&family=Barlow+Condensed:wght@600;700&display=swap">
   <style>
@@ -18,9 +18,13 @@
       --doom-glow:   rgba(76,200,98,.3);
       --amber:       #c87808;
       --mist:        #2a3c2c;
-      --fog:         #587860;
+      --fog:         #7a9480;
       --bone:        #bccebe;
       --white:       #dceeda;
+      /* Series del dashboard (validadas para daltonismo y contraste sobre --stone) */
+      --s-yes:       #38a84f;
+      --s-no:        #9a6fe0;
+      --s-track:     #26332a;
       --f-display: 'Russo One', 'Arial Black', sans-serif;
       --f-label:   'Barlow Condensed', 'Helvetica Neue', sans-serif;
       --f-body:    'Barlow', 'Helvetica Neue', sans-serif;
@@ -35,91 +39,173 @@
       min-height: 100vh;
     }
 
-    #doom-frame {
-      position: fixed; inset: 0; z-index: 10; pointer-events: none;
-      animation: fp 5s ease-in-out infinite;
+    /* ── Barra de administrador (igual en config.html) ── */
+    .admin-bar {
+      position: sticky; top: 0; z-index: 60; margin-inline: -16px;
+      display: flex; align-items: center; gap: 4px; padding: 0 16px; height: 52px;
+      background: color-mix(in srgb, var(--void) 90%, transparent);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--doom);
+      overflow-x: auto; scrollbar-width: none;
     }
-    @keyframes fp {
-      0%,100% { box-shadow: inset 0 0  80px rgba(13,90,44,.18), inset 0 0 3px rgba(76,200,98,.4); }
-      50%     { box-shadow: inset 0 0 150px rgba(13,90,44,.35), inset 0 0 5px rgba(76,200,98,.75); }
+    .admin-brand {
+      font-family: var(--f-display); font-size: 14px; letter-spacing: .08em; color: var(--white);
+      margin-right: 16px; white-space: nowrap;
     }
+    .admin-bar a {
+      font-family: var(--f-label); font-size: 12px; font-weight: 600; letter-spacing: .16em;
+      text-transform: uppercase; color: var(--fog); text-decoration: none; white-space: nowrap;
+      padding: 16px 12px; border-bottom: 2px solid transparent; transition: color .15s, border-color .15s;
+    }
+    .admin-bar a:hover, .admin-bar a:focus-visible { color: var(--white); }
+    .admin-bar a[aria-current="page"] { color: var(--doom-bright); border-bottom-color: var(--doom-bright); }
+    .admin-bar .admin-view { margin-left: auto; }
 
     main {
       position: relative; z-index: 1;
-      max-width: 480px; margin-inline: auto;
-      padding-block: 48px 80px;
+      max-width: 560px; margin-inline: auto;
+      padding-block: 40px 80px;
     }
-
-    .back {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-family: var(--f-label); font-size: 11px; font-weight: 600;
-      letter-spacing: .2em; color: var(--mist); text-transform: uppercase;
-      text-decoration: none; margin-bottom: 32px;
-      transition: color .15s;
-    }
-    .back:hover { color: var(--doom-bright); }
-    .back::before { content: '←'; font-size: 14px; }
 
     .page-eyebrow {
       font-family: var(--f-label); font-size: 10px; font-weight: 600;
       letter-spacing: .3em; color: var(--doom-bright); text-transform: uppercase;
-      margin-bottom: 8px;
+      margin: 0 0 8px;
     }
-
     h1 {
-      font-family: var(--f-display); font-size: clamp(28px,7vw,42px);
-      letter-spacing: .05em; color: var(--white); margin: 0 0 32px;
+      font-family: var(--f-display); font-size: clamp(28px,7vw,42px); font-weight: 400;
+      letter-spacing: .05em; color: var(--white); margin: 0 0 28px;
       text-shadow: 0 0 40px var(--doom-glow);
+    }
+    h2 {
+      font-family: var(--f-label); font-size: 13px; font-weight: 700; letter-spacing: .24em;
+      text-transform: uppercase; color: var(--bone); margin: 36px 0 14px;
     }
 
     .card {
-      background: var(--stone); border: 1px solid var(--doom);
-      padding: 24px; margin-bottom: 16px;
+      background: var(--stone); border: 1px solid var(--edge);
+      padding: 20px; margin-bottom: 14px;
     }
-
     .card-label {
       font-family: var(--f-label); font-size: 10px; font-weight: 600;
       letter-spacing: .28em; color: var(--doom-bright); text-transform: uppercase;
-      margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--edge);
+      margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--edge);
     }
 
-    .resp-decision {
-      font-family: var(--f-label); font-size: 15px; letter-spacing: .08em;
-      color: var(--bone); margin-bottom: 8px;
+    input[type=password] {
+      flex: 1; background: var(--plate); border: 1px solid var(--edge); color: var(--bone);
+      font-family: var(--f-body); font-size: 15px; padding: 10px 12px;
     }
-    .resp-fecha {
-      font-family: var(--f-label); font-size: 11px; letter-spacing: .1em;
-      color: var(--mist); margin-bottom: 14px; font-variant-numeric: tabular-nums;
+    .btn-small {
+      background: var(--doom); color: var(--white); border: none; padding: 0 16px; cursor: pointer;
+      font-family: var(--f-label); font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
     }
-    .resp-comment {
-      font-size: 15px; color: var(--fog); line-height: 1.65;
-      border-left: 2px solid var(--doom); padding-left: 14px; font-style: italic;
+    .btn-ghost {
+      background: transparent; color: var(--fog); border: 1px solid var(--edge); cursor: pointer;
+      font-family: var(--f-label); font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+      padding: 8px 14px; transition: color .15s, border-color .15s;
     }
-    .resp-empty {
-      font-family: var(--f-label); font-size: 13px; letter-spacing: .06em; color: var(--mist);
-    }
+    .btn-ghost:hover { color: var(--white); border-color: var(--doom-bright); }
+    button:focus-visible, a:focus-visible { outline: 2px solid var(--doom-bright); outline-offset: 2px; }
 
-    .yes-badge { color: #4cc862; }
-    .no-badge  { color: #587860; }
+    .muted { color: var(--fog); font-size: 13px; }
+
+    /* ── KPIs ── */
+    .kpis { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .kpi { background: var(--stone); border: 1px solid var(--edge); padding: 16px; }
+    .kpi-label {
+      font-family: var(--f-label); font-size: 11px; font-weight: 600; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--fog); display: flex; align-items: center; gap: 8px;
+    }
+    .kpi-value {
+      display: block; margin-top: 8px; font-family: var(--f-display); font-size: 32px; line-height: 1;
+      color: var(--white); font-variant-numeric: tabular-nums;
+    }
+    .kpi-sub { display: block; margin-top: 6px; font-size: 12px; color: var(--fog); }
+    .dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+    .dot.yes { background: var(--s-yes); }
+    .dot.no { background: var(--s-no); }
+    .dot.pend { background: var(--s-track); border: 1px solid var(--fog); }
+
+    /* ── Tarjetas de evento ── */
+    .events { display: grid; gap: 12px; }
+    .event-card {
+      display: block; width: 100%; text-align: left; cursor: pointer; color: inherit; font: inherit;
+      background: var(--stone); border: 1px solid var(--edge); padding: 18px 20px;
+      transition: border-color .15s, transform .15s;
+    }
+    .event-card:hover { border-color: var(--doom-bright); transform: translateY(-1px); }
+    .ec-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+    .ec-title { font-family: var(--f-label); font-size: 20px; font-weight: 700; letter-spacing: .04em; color: var(--white); }
+    .ec-slug { font-size: 12px; color: var(--fog); }
+    .ec-go { margin-left: auto; font-family: var(--f-label); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--fog); }
+    .event-card:hover .ec-go { color: var(--doom-bright); }
+    .ec-stats { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 12px; font-size: 13px; color: var(--fog); }
+    .ec-stats b { color: var(--bone); font-weight: 500; font-variant-numeric: tabular-nums; }
+
+    /* Barra apilada sí / no / sin responder */
+    .stack { display: flex; gap: 2px; height: 10px; background: var(--void); }
+    .stack span { display: block; height: 100%; min-width: 4px; }
+    .stack span:first-child { border-radius: 4px 0 0 4px; }
+    .stack span:last-child { border-radius: 0 4px 4px 0; }
+    .stack span:only-child { border-radius: 4px; }
+    .stack .yes { background: var(--s-yes); }
+    .stack .no { background: var(--s-no); }
+    .stack .pend { background: var(--s-track); }
+    .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 10px; font-size: 12px; color: var(--fog); }
+    .legend span { display: inline-flex; align-items: center; gap: 6px; }
+
+    /* ── Detalle de evento ── */
+    .detail-nav { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+    .tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tab {
+      background: transparent; border: 1px solid var(--edge); color: var(--fog); cursor: pointer;
+      font-family: var(--f-label); font-size: 12px; font-weight: 600; letter-spacing: .1em; padding: 7px 12px;
+    }
+    .tab[aria-selected="true"] { border-color: var(--doom-bright); color: var(--doom-bright); }
+    .detail-title { font-family: var(--f-display); font-size: 24px; color: var(--white); margin: 0 0 18px; font-weight: 400; letter-spacing: .04em; }
+
+    .resp-item { padding-block: 12px; border-bottom: 1px solid var(--edge); }
+    .resp-item:last-child { border-bottom: 0; }
+    .resp-decision { font-family: var(--f-label); font-size: 15px; letter-spacing: .06em; color: var(--bone); }
+    .resp-fecha { font-family: var(--f-label); font-size: 11px; letter-spacing: .1em; color: var(--fog); margin: 4px 0 6px; font-variant-numeric: tabular-nums; }
+    .resp-comment { font-size: 14px; color: var(--bone); line-height: 1.6; border-left: 2px solid var(--doom); padding-left: 12px; font-style: italic; }
+    .badge { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; }
+    .resp-empty { font-size: 13px; color: var(--fog); }
+
+    .visit-row {
+      display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+      padding-block: 8px; border-bottom: 1px solid var(--edge); font-size: 14px;
+    }
+    .visit-row:last-child { border-bottom: 0; }
+    .visit-row span:last-child { font-family: var(--f-label); letter-spacing: .06em; font-variant-numeric: tabular-nums; color: var(--fog); }
+    .visit-row .seen { color: var(--bone); }
+
+    .poll-row { display: flex; justify-content: space-between; font-size: 14px; margin-top: 12px; }
+    .poll-bar { height: 8px; background: var(--void); margin-top: 6px; }
+    .poll-bar i { display: block; height: 100%; min-width: 0; background: var(--s-yes); border-radius: 0 4px 4px 0; }
 
     .btn-reset {
-      margin-top: 20px; width: 100%; background: transparent;
+      margin-top: 8px; width: 100%; background: transparent;
       color: var(--fog); border: 1px solid var(--edge);
       font-family: var(--f-label); font-weight: 600; font-size: 12px;
       letter-spacing: .15em; text-transform: uppercase;
       padding: 11px; cursor: pointer; transition: border-color .15s, color .15s;
     }
-    .btn-reset:hover { border-color: var(--mist); color: var(--bone); }
+    .btn-reset:hover { border-color: #c84040; color: #ff8080; }
 
-    .btn-refresh {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-family: var(--f-label); font-size: 11px; font-weight: 600;
-      letter-spacing: .18em; color: var(--mist); text-transform: uppercase;
-      background: none; border: none; cursor: pointer; padding: 0;
-      margin-top: 20px; transition: color .15s;
+    /* ── PC ── */
+    @media (min-width: 900px) {
+      body { padding-inline: 32px; }
+      .admin-bar { margin-inline: -32px; padding-inline: 32px; }
+      main { max-width: 1180px; padding-top: 48px; }
+      .kpis { grid-template-columns: repeat(5, 1fr); gap: 12px; }
+      .kpi { padding: 20px 22px; }
+      .kpi-value { font-size: 40px; }
+      .events { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+      .detail-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 16px; align-items: start; }
+      .detail-grid .card { margin-bottom: 16px; }
     }
-    .btn-refresh:hover { color: var(--doom-bright); }
-    .btn-refresh::before { content: '↻'; font-size: 16px; }
 
     @media (prefers-reduced-motion: reduce) {
       * { animation: none !important; transition: none !important; }
@@ -128,70 +214,246 @@
 </head>
 <body>
 
-<div id="doom-frame" aria-hidden="true"></div>
+<nav class="admin-bar" aria-label="Panel de administrador">
+  <span class="admin-brand">Invitaciones</span>
+  <a href="config.html">Configuración</a>
+  <a href="res.html" aria-current="page">Respuestas</a>
+  <a class="admin-view" href="index.html" target="_blank">Ver invitación ↗</a>
+</nav>
 
 <main>
-  <a class="back" href="index.html">Volver a la invitación</a>
-
   <p class="page-eyebrow">Panel de administrador</p>
-  <h1>RESPUESTA</h1>
+  <h1>RESPUESTAS</h1>
 
-  <div class="card" id="resp-card">
-    <div class="card-label">Respuesta de la invitada</div>
-    <div class="resp-empty">Cargando…</div>
-  </div>
+  <form class="card" id="login" hidden>
+    <div class="card-label">Acceso</div>
+    <label class="page-eyebrow" for="pass" style="display:block;color:var(--amber)">Contraseña de administrador</label>
+    <div style="display:flex;gap:8px"><input id="pass" type="password" autocomplete="current-password"><button class="btn-small">Entrar</button></div>
+    <div class="resp-empty" id="login-msg" style="color:#e05050;margin-top:10px"></div>
+  </form>
 
-  <button class="btn-refresh" id="btn-refresh">Actualizar</button>
+  <!-- Resumen de todos los eventos -->
+  <section id="dash" hidden>
+    <div class="kpis" id="kpis"></div>
+    <h2>Por evento</h2>
+    <div class="events" id="events"></div>
+  </section>
+
+  <!-- Detalle de un evento -->
+  <section id="detail" hidden>
+    <div class="detail-nav">
+      <button class="btn-ghost" id="back" type="button">← Resumen</button>
+      <div class="tabs" role="tablist" id="tabs"></div>
+      <button class="btn-ghost" id="refresh" type="button" style="margin-left:auto">↻ Actualizar</button>
+    </div>
+    <div id="out"></div>
+  </section>
 </main>
 
 <script>
 (function(){
-  function load() {
-    var card = document.getElementById('resp-card');
+  var pass = '';
+  try { pass = sessionStorage.getItem('inv-admin') || ''; } catch (e) {}
+  var summary = [];
 
-    fetch('api.php')
-      .then(function(r){ return r.json(); })
-      .then(function(d){ render(card, d); })
-      .catch(function(){
-        var d = null;
-        try { d = JSON.parse(localStorage.getItem('avengers-rsvp')); } catch(e){}
-        render(card, d);
-      });
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+  function pct(a, b) { return b ? Math.round(a / b * 100) : 0; }
+
+  function api(url, opts) {
+    opts = opts || {};
+    opts.headers = { 'X-Admin-Pass': pass };
+    return fetch(url, opts).then(function(r){
+      if (r.status === 401) { showLogin('Contraseña incorrecta'); throw new Error('auth'); }
+      return r.json();
+    });
   }
 
-  function render(card, d) {
-    if (d && d.choice) {
-      var decLabel = d.choice === 'yes'
-        ? '<span class="yes-badge">SÍ VA</span>'
-        : '<span class="no-badge">NO VA</span>';
-      var fecha  = d.fecha ? '<div class="resp-fecha">' + d.fecha + '</div>' : '';
-      var cmt    = d.comment
-        ? '<div class="resp-comment">"' + d.comment + '"</div>'
-        : '<div class="resp-empty" style="font-size:12px;margin-top:12px">Sin comentario.</div>';
+  function showLogin(msg) {
+    document.getElementById('login').hidden = false;
+    document.getElementById('dash').hidden = true;
+    document.getElementById('detail').hidden = true;
+    document.getElementById('login-msg').textContent = msg || '';
+  }
+  document.getElementById('login').addEventListener('submit', function(e){
+    e.preventDefault();
+    pass = document.getElementById('pass').value;
+    try { sessionStorage.setItem('inv-admin', pass); } catch (err) {}
+    start();
+  });
 
-      card.innerHTML =
-        '<div class="card-label">Respuesta de la invitada</div>' +
-        '<div class="resp-decision">Decisión: ' + decLabel + '</div>' +
-        fecha + cmt +
-        '<button class="btn-reset" id="btn-reset">BORRAR RESPUESTA — DEJARLA RESPONDER DE NUEVO</button>';
+  /* Ruta por hash: #cine abre el detalle de ese evento; vacío = resumen */
+  function current() { return decodeURIComponent(location.hash.slice(1)); }
 
-      document.getElementById('btn-reset').addEventListener('click', function(){
-        if (!confirm('¿Borrar la respuesta? Ella podrá responder de nuevo.')) return;
-        fetch('api.php?reset').catch(function(){});
-        try { localStorage.removeItem('avengers-rsvp'); } catch(e){}
-        render(card, null);
-      });
+  function start() {
+    api('api.php?resumen').then(function(list){
+      document.getElementById('login').hidden = true;
+      /* Este navegador es del admin: sus visitas a las invitaciones no se cuentan */
+      try { localStorage.setItem('inv-admin-device', '1'); } catch (err) {}
+      summary = list;
+      route();
+    }).catch(function(e){ if (e.message !== 'auth') showLogin('No se pudo conectar con api.php'); });
+  }
 
-    } else {
-      card.innerHTML =
-        '<div class="card-label">Respuesta de la invitada</div>' +
-        '<div class="resp-empty">Todavía no ha respondido.</div>';
+  function route() {
+    var slug = current();
+    var known = summary.some(function(s){ return s.slug === slug; });
+    document.getElementById('dash').hidden = known;
+    document.getElementById('detail').hidden = !known;
+    if (known) loadDetail(slug); else renderDash();
+  }
+  window.addEventListener('hashchange', route);
+
+
+  /* ══════════ RESUMEN ══════════ */
+
+  /* Barra apilada sí / no / sin responder + leyenda */
+  function stack(si, no, pend) {
+    var total = si + no + pend;
+    if (!total) return '<div class="stack"><span class="pend" style="flex:1"></span></div>';
+    var parts = [['yes', si, 'Sí'], ['no', no, 'No'], ['pend', pend, 'Sin responder']].filter(function(p){ return p[1] > 0; });
+    return '<div class="stack" role="img" aria-label="' + si + ' sí, ' + no + ' no, ' + pend + ' sin responder">' +
+      parts.map(function(p){
+        return '<span class="' + p[0] + '" style="flex:' + p[1] + '" title="' + p[2] + ': ' + p[1] + ' (' + pct(p[1], total) + '%)"></span>';
+      }).join('') + '</div>';
+  }
+  var LEGEND = '<div class="legend"><span><i class="dot yes"></i>Sí</span><span><i class="dot no"></i>No</span><span><i class="dot pend"></i>Sin responder</span></div>';
+
+  function renderDash() {
+    var t = { inv: 0, abr: 0, si: 0, no: 0, pend: 0 };
+    summary.forEach(function(s){ t.inv += s.invitados; t.abr += s.abrieron; t.si += s.si; t.no += s.no; t.pend += s.pendientes; });
+
+    var kpis = [
+      ['Eventos', summary.length, ''],
+      ['Invitados', t.inv, t.inv ? pct(t.abr, t.inv) + '% abrió su link' : ''],
+      ['<i class="dot yes"></i>Confirmaron', t.si, ''],
+      ['<i class="dot no"></i>No asistirán', t.no, ''],
+      ['<i class="dot pend"></i>Sin responder', t.pend, t.inv ? 'de ' + t.inv + ' invitados' : '']
+    ];
+    document.getElementById('kpis').innerHTML = kpis.map(function(k){
+      return '<div class="kpi"><span class="kpi-label">' + k[0] + '</span><span class="kpi-value">' + k[1] + '</span>' +
+        (k[2] ? '<span class="kpi-sub">' + k[2] + '</span>' : '') + '</div>';
+    }).join('');
+
+    document.getElementById('events').innerHTML = summary.length ? summary.map(function(s){
+      return '<button class="event-card" type="button" data-slug="' + esc(s.slug) + '">' +
+        '<div class="ec-head"><span class="ec-title">' + esc(s.titulo) + '</span><span class="ec-slug">' + esc(s.slug) + '</span><span class="ec-go">Ver →</span></div>' +
+        stack(s.si, s.no, s.pendientes) + LEGEND +
+        '<div class="ec-stats">' +
+          '<span><b>' + s.si + '</b> sí</span><span><b>' + s.no + '</b> no</span>' +
+          (s.invitados ? '<span><b>' + s.abrieron + '/' + s.invitados + '</b> abrieron</span>' : '') +
+          (s.visitas_general ? '<span><b>' + s.visitas_general + '</b> visitas al link general</span>' : '') +
+          (s.votos ? '<span><b>' + s.votos + '</b> votos</span>' : '') +
+          '<span>' + (s.ultima ? 'Última respuesta: <b>' + esc(s.ultima) + '</b>' : 'Sin respuestas todavía') + '</span>' +
+        '</div></button>';
+    }).join('') : '<div class="card resp-empty">No hay eventos. Créalos en Configuración.</div>';
+
+    document.querySelectorAll('.event-card').forEach(function(b){
+      b.addEventListener('click', function(){ location.hash = encodeURIComponent(b.dataset.slug); });
+    });
+  }
+
+  document.getElementById('back').addEventListener('click', function(){
+    history.pushState(null, '', location.pathname);
+    start();
+  });
+
+
+  /* ══════════ DETALLE ══════════ */
+  function loadDetail(e) {
+    document.getElementById('tabs').innerHTML = summary.map(function(s){
+      return '<button class="tab" role="tab" type="button" aria-selected="' + (s.slug === e) + '" data-slug="' + esc(s.slug) + '">' + esc(s.titulo) + '</button>';
+    }).join('');
+    document.querySelectorAll('.tab').forEach(function(b){
+      b.addEventListener('click', function(){ location.hash = encodeURIComponent(b.dataset.slug); });
+    });
+
+    var out = document.getElementById('out');
+    out.innerHTML = '<div class="card resp-empty">Cargando…</div>';
+    Promise.all([api('api.php?admin&e=' + e), api('api.php?respuestas&e=' + e), api('api.php?visitas&e=' + e)]).then(function(res){
+      renderDetail(e, res[0], res[1], res[2]);
+    }).catch(function(){});
+  }
+  document.getElementById('refresh').addEventListener('click', function(){ loadDetail(current()); });
+
+  function renderDetail(slug, ev, list, visits) {
+    var invs = ev.invitados || [];
+    var names = {};
+    invs.forEach(function(g){ names[g.slug] = g.nombre; });
+    function who(r) { return r.nombre || names[r.para] || (r.para ? r.para : 'Link general'); }
+
+    var rsvps = list.filter(function(r){ return r.tipo === 'rsvp'; });
+    var yes = rsvps.filter(function(r){ return r.choice === 'yes'; }).length;
+    var answered = {};
+    rsvps.forEach(function(r){ if (r.para) answered[r.para] = true; });
+    var pending = invs.filter(function(g){ return !answered[g.slug]; });
+    var opened = invs.filter(function(g){ return visits[g.slug]; }).length;
+
+    /* Asistencia */
+    var left = '<div class="card"><div class="card-label">Asistencia</div>' +
+      stack(yes, rsvps.length - yes, pending.length) + LEGEND +
+      '<div class="ec-stats"><span><b>' + yes + '</b> sí</span><span><b>' + (rsvps.length - yes) + '</b> no</span>' +
+      (invs.length ? '<span><b>' + pending.length + '</b> sin responder</span>' : '') + '</div></div>';
+
+    /* Respuestas */
+    left += '<div class="card"><div class="card-label">Respuestas (' + rsvps.length + ')</div>' + (rsvps.length ? rsvps.slice().reverse().map(function(r){
+      return '<div class="resp-item"><div class="resp-decision">' + esc(who(r)) + ' — ' +
+        (r.choice === 'yes' ? '<span class="badge"><i class="dot yes"></i>Sí va</span>' : '<span class="badge"><i class="dot no"></i>No va</span>') + '</div>' +
+        '<div class="resp-fecha">' + esc(r.fecha) + '</div>' +
+        (r.comment ? '<div class="resp-comment">"' + esc(r.comment) + '"</div>' : '') + '</div>';
+    }).join('') : '<div class="resp-empty">Todavía nadie ha respondido.</div>') + '</div>';
+
+    /* Visitas */
+    var gen = visits._general;
+    var right = '<div class="card"><div class="card-label">Visitas' + (invs.length ? ' — ' + opened + '/' + invs.length + ' abrieron' : '') + '</div>' +
+      invs.map(function(g){
+        var v = visits[g.slug];
+        return '<div class="visit-row"><span>' + esc(g.nombre) + '</span>' + (v
+          ? '<span class="seen" title="Primera vez: ' + esc(v.primera) + '">' + esc(v.ultima) + (v.veces > 1 ? ' · ' + v.veces + ' veces' : '') + '</span>'
+          : '<span>No la ha abierto</span>') + '</div>';
+      }).join('') +
+      (gen ? '<div class="visit-row"><span>Link general</span><span class="seen">' + gen.veces + ' visitas · última ' + esc(gen.ultima) + '</span></div>' : '') +
+      (!invs.length && !gen ? '<div class="resp-empty">Nadie ha abierto la invitación todavía.</div>' : '') +
+      '</div>';
+
+    if (pending.length) {
+      right += '<div class="card"><div class="card-label">Sin responder (' + pending.length + ')</div><div class="muted">' +
+        pending.map(function(g){ return esc(g.nombre); }).join(' · ') + '</div></div>';
     }
+
+    /* Encuestas */
+    (ev.secciones || []).forEach(function(b, i){
+      if (b.tipo !== 'encuesta') return;
+      var id = b.id || String(i), counts = {}, total = 0;
+      (b.opciones || []).forEach(function(o){ counts[o] = 0; });
+      list.forEach(function(r){
+        if (r.tipo !== 'encuesta' || r.id !== id) return;
+        total++;
+        r.respuesta.forEach(function(o){ counts[o] = (counts[o] || 0) + 1; });
+      });
+      right += '<div class="card"><div class="card-label">Encuesta — ' + esc(b.pregunta) + '</div>' +
+        Object.keys(counts).map(function(o){
+          return '<div class="poll-row"><span>' + esc(o) + '</span><span>' + counts[o] + ' · ' + pct(counts[o], total) + '%</span></div>' +
+                 '<div class="poll-bar"><i style="width:' + pct(counts[o], total) + '%"></i></div>';
+        }).join('') + '<div class="resp-fecha" style="margin-top:12px">' + total + ' votos</div></div>';
+    });
+
+    right += '<button class="btn-reset" id="btn-reset" type="button">Borrar todas las respuestas de este evento</button>';
+
+    document.getElementById('out').innerHTML =
+      '<h2 class="detail-title">' + esc(ev.meta && ev.meta.titulo || slug) + '</h2>' +
+      '<div class="detail-grid"><div>' + left + '</div><div>' + right + '</div></div>';
+
+    document.getElementById('btn-reset').addEventListener('click', function(){
+      if (!confirm('¿Borrar todas las respuestas y votos de "' + slug + '"? No se puede deshacer.')) return;
+      api('api.php?respuestas&reset&e=' + slug, { method: 'POST' }).then(function(){ loadDetail(slug); });
+    });
   }
 
-  document.getElementById('btn-refresh').addEventListener('click', load);
-
-  load();
+  if (pass) start(); else showLogin();
 })();
 </script>
 
